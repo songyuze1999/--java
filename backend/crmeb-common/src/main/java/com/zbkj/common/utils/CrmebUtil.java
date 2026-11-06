@@ -8,7 +8,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.zbkj.common.constants.Constants;
 import com.zbkj.common.exception.CrmebException;
 import org.apache.commons.lang3.StringUtils;
-
+import java.security.Security;
+import java.security.Provider;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -45,7 +46,7 @@ public class CrmebUtil {
 
     public static String encryptPassword(String pwd, String key){
         try {
-            Security.addProvider(new com.sun.crypto.provider.SunJCE());
+//            Security.addProvider(new com.sun.crypto.provider.SunJCE());
             Key _key = getDESSercretKey(key);
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(Cipher.ENCRYPT_MODE, _key);
@@ -62,7 +63,7 @@ public class CrmebUtil {
      */
     public static String decryptPassowrd(String pwd, String key)
             throws Exception {
-        Security.addProvider(new com.sun.crypto.provider.SunJCE());
+//        Security.addProvider(new com.sun.crypto.provider.SunJCE());
         Key aKey = getDESSercretKey(key);
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.DECRYPT_MODE, aKey);

@@ -1,7 +1,7 @@
 # CRMEB 相关配置
 crmeb:
   version: CRMEB-JAVA-KY-v3.1 # 当前代码版本
-  imagePath: /你的站点绝对路径 建议jar包位置/ # 服务器图片路径配置 斜杠结尾
+  imagePath: /home/ubuntu/jiuhai_mall/back/ # 服务器图片路径配置 斜杠结尾
   asyncConfig: false #是否同步config表数据到redis
   jwt-secret: # JWT签名密钥，请配置随机密钥（如 openssl rand -hex 32）；也可用环境变量 CRMEB_JWT_SECRET；留空时启动自动生成临时密钥（重启后需重新登录）
   activityStyleCachedTime: 10 #活动边框缓存周期 秒为单位，生产环境适当5-10分钟即可
@@ -34,7 +34,7 @@ spring:
   profiles:
     #  配置的环境
     #    active: #spring.profiles.active#
-    active:
+    active: dev
   servlet:
     multipart:
       max-file-size: 100MB #设置单个文件大小
@@ -49,9 +49,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/java?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: 111111
+    url: jdbc:mysql://127.0.0.1:3306/jiuhai_mall?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: admin
+    password: StrongPassword123!
   redis:
     host: 127.0.0.1 #地址
     port: 6379 #端口

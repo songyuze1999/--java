@@ -3,6 +3,8 @@ package com.zbkj.admin.quartz;
 import com.zbkj.admin.model.ScheduleJob;
 import lombok.AllArgsConstructor;
 import org.quartz.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class ScheduleManager {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final static String JOB_NAME = "TASK_";
 
     private final Scheduler scheduler;
@@ -38,6 +40,7 @@ public class ScheduleManager {
      */
     public CronTrigger getCronTrigger(ScheduleJob scheduleJob) {
         try {
+            logger.error(scheduleJob.toString());
             return (CronTrigger) scheduler.getTrigger(getTriggerKey(scheduleJob));
         } catch (SchedulerException e) {
             throw new RuntimeException("获取定时任务CronTrigger出现异常", e);

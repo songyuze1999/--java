@@ -33,7 +33,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/crmeb_java_beta?characterEncoding=utf-8&useSSL=false&serverTimeZone=GMT+8
+    url: jdbc:mysql://127.0.0.1:3307/crmeb_java_beta?characterEncoding=utf-8&useSSL=false&serverTimeZone=GMT+8
     username: crmeb_java_beta
     password: 111111
   redis:

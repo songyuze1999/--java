@@ -61,9 +61,9 @@ public class JdCloudServiceImpl implements JdCloudService {
             }
 
             PutObjectResult putObjectResult = s3.putObject(bucket, fileName, file);
-            log.info("京东云存储上传文件结束：{}", putObjectResult.getETag());
+//            log.info("京东云存储上传文件结束：{}", putObjectResult.getETag());
         } catch (Exception e) {
-            log.error("upload JD OSS file error : ", e);
+//            log.error("upload JD OSS file error : ", e);
             throw new CrmebException(e.getMessage());
         } finally {
             s3.shutdown();
@@ -83,9 +83,9 @@ public class JdCloudServiceImpl implements JdCloudService {
 
         try {
             s3.createBucket(bucketName);
-            log.info("create JD OSS bucket {} ", bucketName);
+//            log.info("create JD OSS bucket {} ", bucketName);
         } catch (AmazonServiceException e) {
-            log.error("create JD OSS bucket err : ", e);
+//            log.error("create JD OSS bucket err : ", e);
             throw new CrmebException("京东云存储创建存储空间失败:" + e.getMessage());
         } finally {
             s3.shutdown();
@@ -106,7 +106,7 @@ public class JdCloudServiceImpl implements JdCloudService {
             URL url = s3.getUrl(bucket, "w5.webp");
             urlPath = url.toString();
         } catch (Exception e) {
-            log.error("get JD OSS file url err : ", e);
+//            log.error("get JD OSS file url err : ", e);
             throw new CrmebException("京东云获取文件地址失败:" + e.getMessage());
         } finally {
             s3.shutdown();

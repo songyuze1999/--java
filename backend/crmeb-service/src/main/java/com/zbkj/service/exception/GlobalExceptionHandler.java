@@ -140,7 +140,7 @@ public class GlobalExceptionHandler {
         try {
             sw.close();
         } catch (IOException ioException) {
-            log.error("异常日志：关闭异常详情Writer异常");
+//            log.error("异常日志：关闭异常详情Writer异常");
         }
 
         // 异常的url

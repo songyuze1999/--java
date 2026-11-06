@@ -6,8 +6,8 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sun.misc.BASE64Decoder;
-
+import java.util.Base64;
+import java.nio.charset.StandardCharsets; // 推荐加上字符集，避免中文或特殊字符乱码
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -52,8 +52,8 @@ public class SwaggerInterceptor extends HandlerInterceptorAdapter {
     public boolean httpBasicAuth(String authorization) throws IOException {
         if(check){
             if (authorization != null && authorization.split(" ").length == 2) {
-                String userAndPass = new String(new BASE64Decoder().decodeBuffer(authorization.split(" ")[1]));
-                String username = userAndPass.split(":").length == 2 ? userAndPass.split(":")[0] : null;
+                byte[] decodedBytes = Base64.getDecoder().decode(authorization.split(" ")[1]);
+                String userAndPass = new String(decodedBytes, StandardCharsets.UTF_8);                String username = userAndPass.split(":").length == 2 ? userAndPass.split(":")[0] : null;
                 String password = userAndPass.split(":").length == 2 ? userAndPass.split(":")[1] : null;
                 return this.username.equals(username) && this.password.equals(password);
             }

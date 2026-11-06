@@ -100,8 +100,8 @@
                 "oauth" : {
                     "apple" : {},
                     "weixin" : {
-                        "appid" : "",
-                        "appsecret" : "",
+                        "appid" : "wx59c8081c4acc8710",
+                        "appsecret" : "d5c88644bcaae5bf0a927e3fc587f796",
                         "UniversalLinks" : ""
                     }
                 },
@@ -176,7 +176,7 @@
     },
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxf861ca1029d7c342s",
         "setting" : {
             "urlCheck" : false,
             "minified" : true,
@@ -249,7 +249,8 @@
             }
         }
     },
-    "sassImplementationName" : "sass"
+    "sassImplementationName" : "sass",
+    "fallbackLocale" : "zh-Hans"
 }
 /* ios打包配置 */
 

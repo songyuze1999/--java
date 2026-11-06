@@ -16,13 +16,13 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/java_dev?characterEncoding=utf-8&useSSL=false&serverTimeZone=GMT+8
-    username: java_dev
-    password: 111111
+    url: jdbc:mysql://127.0.0.1:3307/crmeb?characterEncoding=utf-8&useSSL=false&serverTimeZone=GMT+8&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
   redis:
     host: 127.0.0.1 #地址
     port: 6379 #端口
-    password: 111111
+    password:
     timeout: 10000 # 连接超时时间（毫秒）
     database: 10 #默认数据库
     jedis:

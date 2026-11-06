@@ -38,7 +38,7 @@ CREATE TABLE `eb_activity_style`  (
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 5 ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 5 ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_activity_style
@@ -74,7 +74,7 @@ CREATE TABLE `eb_ali_pay_callback`  (
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `out_trade_no`(`out_trade_no` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '支付宝回调表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '支付宝回调表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_ali_pay_callback
@@ -105,7 +105,7 @@ CREATE TABLE `eb_ali_pay_info`  (
   `notify_url` varchar(256) DEFAULT NULL COMMENT '支付宝服务器主动通知商户服务器里指定的页面http/https路径',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `out_trade_no`(`out_trade_no` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '微信订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '微信订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_ali_pay_info
@@ -155,7 +155,7 @@ CREATE TABLE `eb_theme` (
   `add_time` int NOT NULL DEFAULT '0' COMMENT '添加时间',
   `up_time` int NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT='主题表';
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='主题表';
 
 -- ----------------------------
 -- Records of eb_ali_pay_info
@@ -174,7 +174,7 @@ CREATE TABLE `eb_theme_download` (
   `download_time` int NOT NULL DEFAULT '0' COMMENT '下载时间',
   `download_url` varchar(500) NOT NULL DEFAULT '' COMMENT '下载地址',
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT='主题下载记录表';
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT='主题下载记录表';
 
 
 -- ----------------------------
@@ -205,7 +205,7 @@ CREATE TABLE `eb_article`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 3 COMMENT = '文章管理表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 3 COMMENT = '文章管理表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_article
@@ -232,7 +232,7 @@ CREATE TABLE `eb_category`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `status+pid`(`pid` ASC, `status` ASC) USING BTREE,
   INDEX `id+status+url`(`path` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 843 COMMENT = '分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 843 COMMENT = '分类表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_category
@@ -538,7 +538,7 @@ CREATE TABLE `eb_exception_log`  (
   `exp_detail` longtext NULL COMMENT '异常详细信息',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 12976 COMMENT = '异常信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 12976 COMMENT = '异常信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_exception_log
@@ -564,7 +564,7 @@ CREATE TABLE `eb_express`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `code`(`code` ASC) USING BTREE,
   INDEX `is_show`(`is_show` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1008 COMMENT = '快递公司表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1008 COMMENT = '快递公司表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_express
@@ -1598,7 +1598,7 @@ CREATE TABLE `eb_group_config`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`name` ASC) USING BTREE,
   INDEX `tag`(`tag` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2098 COMMENT = '组合配置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2098 COMMENT = '组合配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_group_config
@@ -1890,7 +1890,7 @@ CREATE TABLE `eb_page_category`  (
   `level` tinyint(1) NOT NULL DEFAULT 0 COMMENT '层级',
   `is_mer` int NOT NULL DEFAULT 0 COMMENT '是否商户  0平台，商户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '页面链接分类' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '页面链接分类' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_page_category
@@ -1931,7 +1931,7 @@ CREATE TABLE `eb_page_diy`  (
   INDEX `template_name`(`template_name` ASC, `type` ASC) USING BTREE,
   INDEX `status_type`(`status` ASC, `type` ASC) USING BTREE,
   INDEX `mer_id`(`mer_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 282 COMMENT = 'DIY数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 282 COMMENT = 'DIY数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_page_diy
@@ -1956,7 +1956,7 @@ CREATE TABLE `eb_page_link`  (
   `add_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   `is_mer` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1是商户的链接',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '页面链接' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '页面链接' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_page_link
@@ -1970,7 +1970,7 @@ CREATE TABLE `eb_pay_component_brand`  (
   `brand_id` int UNSIGNED NOT NULL COMMENT '品牌ID',
   `brand_wording` varchar(255) NOT NULL DEFAULT '' COMMENT '品牌名称',
   INDEX `brand_id`(`brand_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组件品牌表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '组件品牌表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_brand
@@ -1994,7 +1994,7 @@ CREATE TABLE `eb_pay_component_cat`  (
   INDEX `third_cat_id`(`third_cat_id` ASC) USING BTREE,
   INDEX `second_cat_id`(`second_cat_id` ASC) USING BTREE,
   INDEX `first_cat_id`(`first_cat_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组件类目表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '组件类目表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_cat
@@ -4779,7 +4779,7 @@ CREATE TABLE `eb_pay_component_delivery_company`  (
   `delivery_name` varchar(50) NOT NULL COMMENT '快递公司名称',
   `is_del` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除 0未删除 1删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 600 COMMENT = '组件快递公司表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 600 COMMENT = '组件快递公司表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_delivery_company
@@ -5418,7 +5418,7 @@ CREATE TABLE `eb_pay_component_draft_product`  (
   `is_del` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除 0未删除 1删除',
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品草稿表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品草稿表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_draft_product
@@ -5463,7 +5463,7 @@ CREATE TABLE `eb_pay_component_order`  (
   `transaction_id` varchar(32) DEFAULT NULL COMMENT '微信支付订单号',
   `time_end` varchar(14) DEFAULT NULL COMMENT '订单支付时间，格式为yyyyMMddHHmmss',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件订单表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件订单表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_order
@@ -5488,7 +5488,7 @@ CREATE TABLE `eb_pay_component_order_product`  (
   `path` varchar(255) NOT NULL COMMENT '绑定的小程序商品路径',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件订单详情表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件订单详情表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_order_product
@@ -5523,7 +5523,7 @@ CREATE TABLE `eb_pay_component_product`  (
   `is_del` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除 0未删除 1删除',
   `is_sub` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否单独分佣',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_product
@@ -5543,7 +5543,7 @@ CREATE TABLE `eb_pay_component_product_audit_info`  (
   `audit_id` varchar(50) DEFAULT NULL COMMENT '审核单id',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品审核信息表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品审核信息表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_product_audit_info
@@ -5562,7 +5562,7 @@ CREATE TABLE `eb_pay_component_product_info`  (
   `is_del` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除 0未删除 1删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品详情表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品详情表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_product_info
@@ -5589,7 +5589,7 @@ CREATE TABLE `eb_pay_component_product_sku`  (
   `version` int NOT NULL DEFAULT 0 COMMENT '并发版本控制',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品sku表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品sku表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_product_sku
@@ -5608,7 +5608,7 @@ CREATE TABLE `eb_pay_component_product_sku_attr`  (
   `is_del` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除 0未删除 1删除',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sku_id`(`sku_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商品sku属性表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商品sku属性表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_product_sku_attr
@@ -5642,7 +5642,7 @@ CREATE TABLE `eb_pay_component_shop_brand`  (
   `reject_reason` varchar(255) DEFAULT NULL COMMENT '如果审核拒绝，返回拒绝原因',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '组件商户品牌表(视频号)' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '组件商户品牌表(视频号)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_pay_component_shop_brand
@@ -5663,7 +5663,7 @@ CREATE TABLE `eb_product_day_record`  (
   `order_success_product_fee` decimal(8, 2) DEFAULT NULL COMMENT '销售额',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `date`(`date` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 11182 COMMENT = '商品日记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 11182 COMMENT = '商品日记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_product_day_record
@@ -5684,7 +5684,7 @@ CREATE TABLE `eb_schedule_job`  (
   `is_delte` tinyint UNSIGNED NULL DEFAULT 0 COMMENT '是否删除',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`job_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 20 COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 20 COMMENT = '定时任务' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_schedule_job
@@ -5724,7 +5724,7 @@ CREATE TABLE `eb_schedule_job_log`  (
   `times` int NOT NULL COMMENT '耗时(单位：毫秒)',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 5756731 COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 5756731 COMMENT = '定时任务日志' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_schedule_job_log
@@ -5750,7 +5750,7 @@ CREATE TABLE `eb_sensitive_method_log`  (
   `error_msg` varchar(2000) NULL DEFAULT '' COMMENT '错误消息',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1643 COMMENT = '敏感操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1643 COMMENT = '敏感操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_sensitive_method_log
@@ -5769,7 +5769,7 @@ CREATE TABLE `eb_shipping_templates`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 3 COMMENT = '运费模板' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 3 COMMENT = '运费模板' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_shipping_templates
@@ -5793,7 +5793,7 @@ CREATE TABLE `eb_shipping_templates_free`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2 COMMENT = '运费模板包邮' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2 COMMENT = '运费模板包邮' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_shipping_templates_free
@@ -5818,7 +5818,7 @@ CREATE TABLE `eb_shipping_templates_region`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2 COMMENT = '运费模板指定区域费用' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2 COMMENT = '运费模板指定区域费用' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_shipping_templates_region
@@ -5839,7 +5839,7 @@ CREATE TABLE `eb_shopping_product_day_record`  (
   `order_success_product_num` int DEFAULT NULL COMMENT '交易成功商品数',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `date`(`date` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 379 COMMENT = '商城商品日记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 379 COMMENT = '商城商品日记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_shopping_product_day_record
@@ -5861,7 +5861,7 @@ CREATE TABLE `eb_sms_record`  (
   `record_id` int UNSIGNED DEFAULT NULL COMMENT '发送记录id',
   `memo` text NULL COMMENT '短信平台返回信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '短信发送记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '短信发送记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_sms_record
@@ -5882,7 +5882,7 @@ CREATE TABLE `eb_sms_template`  (
   `content` varchar(500) NOT NULL COMMENT '短息内容',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 573 COMMENT = '短信模板表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 573 COMMENT = '短信模板表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_sms_template
@@ -5936,7 +5936,7 @@ CREATE TABLE `eb_store_bargain`  (
   `quota_show` int NOT NULL DEFAULT 0 COMMENT '限量总数显示',
   `people_num` int DEFAULT NULL COMMENT '砍价人数——需要多少人砍价成功',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 50 COMMENT = '砍价表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 50 COMMENT = '砍价表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_bargain
@@ -5957,7 +5957,7 @@ CREATE TABLE `eb_store_bargain_user`  (
   `add_time` bigint UNSIGNED DEFAULT NULL COMMENT '参与时间',
   `is_del` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否取消',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 18 COMMENT = '用户参与砍价表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 18 COMMENT = '用户参与砍价表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_bargain_user
@@ -5975,7 +5975,7 @@ CREATE TABLE `eb_store_bargain_user_help`  (
   `price` decimal(8, 2) UNSIGNED DEFAULT NULL COMMENT '帮助砍价多少金额',
   `add_time` bigint UNSIGNED DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 23 COMMENT = '砍价用户帮助表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 23 COMMENT = '砍价用户帮助表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_bargain_user_help
@@ -6006,7 +6006,7 @@ CREATE TABLE `eb_store_cart`  (
   INDEX `uid_2`(`uid` ASC) USING BTREE,
   INDEX `uid_3`(`uid` ASC, `is_new` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 66 COMMENT = '购物车表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 66 COMMENT = '购物车表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_cart
@@ -6054,7 +6054,7 @@ CREATE TABLE `eb_store_combination`  (
   `once_num` int NOT NULL DEFAULT 0 COMMENT '每个订单可购买数量',
   `virtual_ration` int NOT NULL DEFAULT 100 COMMENT '虚拟成团百分比',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 50 COMMENT = '拼团商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 50 COMMENT = '拼团商品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_combination
@@ -6089,7 +6089,7 @@ CREATE TABLE `eb_store_coupon`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `state`(`status` ASC) USING BTREE,
   INDEX `is_del`(`is_del` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for eb_store_coupon_user
@@ -6118,7 +6118,7 @@ CREATE TABLE `eb_store_coupon_user`  (
   INDEX `uid`(`uid` ASC) USING BTREE,
   INDEX `end_time`(`end_time` ASC) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 5 COMMENT = '优惠券记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 5 COMMENT = '优惠券记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_coupon_user
@@ -6203,7 +6203,7 @@ CREATE TABLE `eb_store_order`  (
   INDEX `status`(`status` ASC) USING BTREE,
   INDEX `is_del`(`is_del` ASC) USING BTREE,
   INDEX `coupon_id`(`coupon_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 137 COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 137 COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_order
@@ -6238,7 +6238,7 @@ CREATE TABLE `eb_store_order_info`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `oid`(`order_id` ASC, `unique` ASC) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 140 COMMENT = '订单购物详情表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 140 COMMENT = '订单购物详情表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_order_info
@@ -6255,7 +6255,7 @@ CREATE TABLE `eb_store_order_status`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
   INDEX `oid`(`oid` ASC) USING BTREE,
   INDEX `change_type`(`change_type` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单操作记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单操作记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_order_status
@@ -6286,7 +6286,7 @@ CREATE TABLE `eb_store_pink`  (
   `nickname` varchar(64) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `avatar` varchar(256) NOT NULL DEFAULT '' COMMENT '用户头像',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 38 COMMENT = '拼团表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 38 COMMENT = '拼团表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_pink
@@ -6354,7 +6354,7 @@ CREATE TABLE `eb_store_product`  (
   INDEX `sales`(`sales` ASC) USING BTREE,
   INDEX `add_time`(`add_time` ASC) USING BTREE,
   INDEX `is_postage`(`is_postage` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 171 COMMENT = '商品表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 171 COMMENT = '商品表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product
@@ -6381,7 +6381,7 @@ CREATE TABLE `eb_store_product_attr`  (
   `is_show_image` tinyint UNSIGNED NULL DEFAULT 0 COMMENT '是否展示规格图片',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `store_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 959 COMMENT = '商品属性表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 959 COMMENT = '商品属性表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_attr
@@ -6413,7 +6413,7 @@ CREATE TABLE `eb_store_product_attr_option`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE,
   INDEX `attr_id`(`attr_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 4138 COMMENT = '商品规格属性表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 4138 COMMENT = '商品规格属性表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_attr_option
@@ -6603,7 +6603,7 @@ CREATE TABLE `eb_store_product_attr_result`  (
   `type` tinyint(1) NULL DEFAULT 0 COMMENT '活动类型 0=商品，1=秒杀，2=砍价，3=拼团',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '商品属性详情表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '商品属性详情表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_attr_result
@@ -6640,7 +6640,7 @@ CREATE TABLE `eb_store_product_attr_value`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `unique`(`unique` ASC, `suk` ASC) USING BTREE,
   INDEX `store_id`(`product_id` ASC, `suk` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 3397 COMMENT = '商品属性值表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 3397 COMMENT = '商品属性值表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_product_attr_value
@@ -7031,7 +7031,7 @@ CREATE TABLE `eb_store_product_cate`  (
   `cate_id` int NOT NULL DEFAULT 0 COMMENT '分类id',
   `add_time` int NOT NULL DEFAULT 0 COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '商品分类辅助表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '商品分类辅助表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_cate
@@ -7047,7 +7047,7 @@ CREATE TABLE `eb_store_product_coupon`  (
   `issue_coupon_id` int NOT NULL DEFAULT 0 COMMENT '优惠劵id',
   `add_time` int NOT NULL DEFAULT 0 COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '商品优惠券表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '商品优惠券表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_coupon
@@ -7064,7 +7064,7 @@ CREATE TABLE `eb_store_product_description`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `product_id`(`product_id` ASC, `type` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 697 COMMENT = '商品描述表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 697 COMMENT = '商品描述表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_description
@@ -7092,7 +7092,7 @@ CREATE TABLE `eb_store_product_guarantee`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 4 COMMENT = '商品保障服务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 4 COMMENT = '商品保障服务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_product_guarantee
@@ -7122,7 +7122,7 @@ CREATE TABLE `eb_store_product_log`  (
   `collect_num` tinyint(1) NOT NULL DEFAULT 0 COMMENT '收藏',
   `add_time` bigint NOT NULL DEFAULT 0 COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '商品日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '商品日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_product_log
@@ -7144,7 +7144,7 @@ CREATE TABLE `eb_store_product_relation`  (
   UNIQUE INDEX `uid`(`uid` ASC, `product_id` ASC, `type` ASC, `category` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE,
   INDEX `category`(`category` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 13 COMMENT = '商品点赞和收藏表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 13 COMMENT = '商品点赞和收藏表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_product_relation
@@ -7180,7 +7180,7 @@ CREATE TABLE `eb_store_product_reply`  (
   INDEX `product_score`(`product_score` ASC) USING BTREE,
   INDEX `service_score`(`service_score` ASC) USING BTREE,
   INDEX `uid+oid`(`uid` ASC, `oid` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 32 COMMENT = '评论表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 32 COMMENT = '评论表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_reply
@@ -7195,7 +7195,7 @@ CREATE TABLE `eb_store_product_rule`  (
   `rule_name` varchar(32) NOT NULL COMMENT '规格名称',
   `rule_value` text NOT NULL COMMENT '规格值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2 COMMENT = '商品规则值(规格)表' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2 COMMENT = '商品规则值(规格)表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_store_product_rule
@@ -7246,7 +7246,7 @@ CREATE TABLE `eb_store_seckill`  (
   INDEX `add_time`(`create_time` ASC) USING BTREE,
   INDEX `sort`(`sort` ASC) USING BTREE,
   INDEX `is_postage`(`is_postage` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 66 COMMENT = '商品秒杀产品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 66 COMMENT = '商品秒杀产品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_seckill
@@ -7269,7 +7269,7 @@ CREATE TABLE `eb_store_seckill_manger`  (
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `is_del` int NOT NULL DEFAULT 0 COMMENT '删除标记 0=为删除 1=删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 4 ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 4 ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_store_seckill_manger
@@ -7300,7 +7300,7 @@ CREATE TABLE `eb_system_admin`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `account`(`account` ASC) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '后台管理员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台管理员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_admin
@@ -7323,7 +7323,7 @@ CREATE TABLE `eb_system_attachment`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`att_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1609 COMMENT = '附件管理表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1609 COMMENT = '附件管理表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_attachment
@@ -7528,7 +7528,7 @@ CREATE TABLE `eb_system_city`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '城市表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '城市表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_city
@@ -11488,7 +11488,7 @@ CREATE TABLE `eb_system_config`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `status+name`(`name` ASC) USING BTREE,
   INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 10965 COMMENT = '配置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 10965 COMMENT = '配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_config
@@ -11739,7 +11739,7 @@ CREATE TABLE `eb_system_form_temp`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 180 COMMENT = '表单模板' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 180 COMMENT = '表单模板' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_form_temp
@@ -11837,7 +11837,7 @@ CREATE TABLE `eb_system_group`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 74 COMMENT = '组合数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 74 COMMENT = '组合数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_group
@@ -11874,7 +11874,7 @@ CREATE TABLE `eb_system_group_data`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2542 COMMENT = '组合数据详情表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2542 COMMENT = '组合数据详情表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_group_data
@@ -11970,7 +11970,7 @@ CREATE TABLE `eb_system_menu`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 578 COMMENT = '系统菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 578 COMMENT = '系统菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_menu
@@ -12379,7 +12379,7 @@ CREATE TABLE `eb_system_notification`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `mark`(`mark` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 13 COMMENT = '通知设置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 13 COMMENT = '通知设置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_notification
@@ -12410,7 +12410,7 @@ CREATE TABLE `eb_system_role`  (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 9 COMMENT = '身份管理表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 9 COMMENT = '身份管理表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for eb_system_role_menu
@@ -12420,7 +12420,7 @@ CREATE TABLE `eb_system_role_menu`  (
   `rid` int NOT NULL COMMENT '角色id',
   `menu_id` int NOT NULL COMMENT '权限id',
   PRIMARY KEY (`rid`, `menu_id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for eb_system_store
@@ -12444,7 +12444,7 @@ CREATE TABLE `eb_system_store`  (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `phone`(`phone` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 5 COMMENT = '门店自提' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 5 COMMENT = '门店自提' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_store
@@ -12467,7 +12467,7 @@ CREATE TABLE `eb_system_store_staff`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '门店店员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '门店店员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_store_staff
@@ -12489,7 +12489,7 @@ CREATE TABLE `eb_system_user_level`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 6 COMMENT = '普通会员等级' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 6 COMMENT = '普通会员等级' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_system_user_level
@@ -12515,7 +12515,7 @@ CREATE TABLE `eb_template_message`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 59 COMMENT = '微信模板' ROW_FORMAT = COMPACT;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 59 COMMENT = '微信模板' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of eb_template_message
@@ -12554,7 +12554,7 @@ CREATE TABLE `eb_trading_day_record`  (
   `brokerage_fee` decimal(8, 2) DEFAULT NULL COMMENT '支付佣金金额（用户确认到账佣金）',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `date`(`date` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 378 COMMENT = '商城交易日记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 378 COMMENT = '商城交易日记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_trading_day_record
@@ -12613,7 +12613,7 @@ CREATE TABLE `eb_user`  (
   INDEX `level`(`level` ASC) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE,
   INDEX `is_promoter`(`is_promoter` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 2 COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 2 COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user
@@ -12645,7 +12645,7 @@ CREATE TABLE `eb_user_address`  (
   INDEX `uid`(`uid` ASC) USING BTREE,
   INDEX `is_default`(`is_default` ASC) USING BTREE,
   INDEX `is_del`(`is_del` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 13 COMMENT = '用户地址表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 13 COMMENT = '用户地址表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_address
@@ -12675,7 +12675,7 @@ CREATE TABLE `eb_user_bill`  (
   INDEX `add_time`(`create_time` ASC) USING BTREE,
   INDEX `pm`(`pm` ASC) USING BTREE,
   INDEX `type`(`category` ASC, `type` ASC, `link_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 140 COMMENT = '用户账单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 140 COMMENT = '用户账单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_bill
@@ -12707,7 +12707,7 @@ CREATE TABLE `eb_user_brokerage_record`  (
   INDEX `add_time`(`create_time` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE,
   INDEX `type_link`(`type` ASC, `link_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 74 COMMENT = '用户佣金记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 74 COMMENT = '用户佣金记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_brokerage_record
@@ -12736,7 +12736,7 @@ CREATE TABLE `eb_user_experience_record`  (
   INDEX `add_time`(`create_time` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE,
   INDEX `type_link`(`type` ASC, `link_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 136 COMMENT = '用户经验记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 136 COMMENT = '用户经验记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_experience_record
@@ -12769,7 +12769,7 @@ CREATE TABLE `eb_user_extract`  (
   INDEX `extract_type`(`extract_type` ASC) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE,
   INDEX `openid`(`uid` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 8 COMMENT = '用户提现表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 8 COMMENT = '用户提现表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_extract
@@ -12783,7 +12783,7 @@ CREATE TABLE `eb_user_group`  (
   `id` smallint UNSIGNED NOT NULL AUTO_INCREMENT,
   `group_name` varchar(64) DEFAULT NULL COMMENT '用户分组名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 4 COMMENT = '用户分组表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 4 COMMENT = '用户分组表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_group
@@ -12817,7 +12817,7 @@ CREATE TABLE `eb_user_integral_record`  (
   INDEX `add_time`(`create_time` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE,
   INDEX `type_link`(`type` ASC, `link_id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 118 COMMENT = '用户积分记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 118 COMMENT = '用户积分记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_integral_record
@@ -12842,7 +12842,7 @@ CREATE TABLE `eb_user_level`  (
   `expired_time` timestamp DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 26 COMMENT = '用户等级记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 26 COMMENT = '用户等级记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_level
@@ -12870,7 +12870,7 @@ CREATE TABLE `eb_user_recharge`  (
   INDEX `uid`(`uid` ASC) USING BTREE,
   INDEX `recharge_type`(`recharge_type` ASC) USING BTREE,
   INDEX `paid`(`paid` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 3 COMMENT = '用户充值表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 3 COMMENT = '用户充值表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_recharge
@@ -12891,7 +12891,7 @@ CREATE TABLE `eb_user_sign`  (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `uid`(`uid` ASC, `type` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 16 COMMENT = '签到记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 16 COMMENT = '签到记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_sign
@@ -12905,7 +12905,7 @@ CREATE TABLE `eb_user_tag`  (
   `id` smallint UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT NULL COMMENT '标签名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 6 COMMENT = '标签管理' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 6 COMMENT = '标签管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_tag
@@ -12930,7 +12930,7 @@ CREATE TABLE `eb_user_token`  (
   `login_ip` varchar(32) DEFAULT NULL COMMENT '登录ip',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `type+token`(`type` ASC, `token` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 7 ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 7 ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_token
@@ -12947,7 +12947,7 @@ CREATE TABLE `eb_user_visit_record`  (
   `visit_type` int DEFAULT NULL COMMENT '访问类型',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `date`(`date` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 25121 COMMENT = '用户访问记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 25121 COMMENT = '用户访问记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_user_visit_record
@@ -12967,7 +12967,7 @@ CREATE TABLE `eb_wechat_callback`  (
   `content` text NULL COMMENT '内容',
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '微信回调表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '微信回调表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_callback
@@ -12986,7 +12986,7 @@ CREATE TABLE `eb_wechat_exceptions`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1453676 COMMENT = '微信异常表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1453676 COMMENT = '微信异常表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_exceptions
@@ -13031,7 +13031,7 @@ CREATE TABLE `eb_wechat_pay_info`  (
   `trade_state_desc` varchar(256) DEFAULT NULL COMMENT '交易状态描述',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `out_trade_no`(`out_trade_no` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 7 COMMENT = '微信订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 7 COMMENT = '微信订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_pay_info
@@ -13054,7 +13054,7 @@ CREATE TABLE `eb_wechat_program_my_temp`  (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1 COMMENT = '小程序我的模板' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 1 COMMENT = '小程序我的模板' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_program_my_temp
@@ -13074,7 +13074,7 @@ CREATE TABLE `eb_wechat_program_public_temp`  (
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tid`(`tid` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 359 COMMENT = '小程序微信公共模板库' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 359 COMMENT = '小程序微信公共模板库' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_program_public_temp
@@ -13454,7 +13454,7 @@ CREATE TABLE `eb_wechat_reply`  (
   UNIQUE INDEX `key`(`keywords` ASC) USING BTREE,
   INDEX `type`(`type` ASC) USING BTREE,
   INDEX `status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 4 COMMENT = '微信关键字回复表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci AUTO_INCREMENT = 4 COMMENT = '微信关键字回复表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of eb_wechat_reply
@@ -13474,7 +13474,7 @@ CREATE TABLE `qrtz_blob_triggers`  (
   `BLOB_DATA` blob NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
   CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_blob_triggers
@@ -13492,7 +13492,7 @@ CREATE TABLE `qrtz_cron_triggers`  (
   `TIME_ZONE_ID` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
   CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
@@ -13536,7 +13536,7 @@ CREATE TABLE `qrtz_fired_triggers`  (
   `IS_NONCONCURRENT` varchar(1) DEFAULT NULL,
   `REQUESTS_RECOVERY` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `ENTRY_ID`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_fired_triggers
@@ -13558,7 +13558,7 @@ CREATE TABLE `qrtz_job_details`  (
   `REQUESTS_RECOVERY` varchar(1) NOT NULL,
   `JOB_DATA` blob NULL,
   PRIMARY KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_job_details
@@ -13591,7 +13591,7 @@ CREATE TABLE `qrtz_locks`  (
   `SCHED_NAME` varchar(120) NOT NULL,
   `LOCK_NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`, `LOCK_NAME`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_locks
@@ -13606,7 +13606,7 @@ CREATE TABLE `qrtz_paused_trigger_grps`  (
   `SCHED_NAME` varchar(120) NOT NULL,
   `TRIGGER_GROUP` varchar(200) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_GROUP`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_paused_trigger_grps
@@ -13622,7 +13622,7 @@ CREATE TABLE `qrtz_scheduler_state`  (
   `LAST_CHECKIN_TIME` bigint NOT NULL,
   `CHECKIN_INTERVAL` bigint NOT NULL,
   PRIMARY KEY (`SCHED_NAME`, `INSTANCE_NAME`) USING BTREE
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
@@ -13641,7 +13641,7 @@ CREATE TABLE `qrtz_simple_triggers`  (
   `TIMES_TRIGGERED` bigint NOT NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
   CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_simple_triggers
@@ -13668,7 +13668,7 @@ CREATE TABLE `qrtz_simprop_triggers`  (
   `BOOL_PROP_2` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
   CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) REFERENCES `qrtz_triggers` (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_simprop_triggers
@@ -13698,7 +13698,7 @@ CREATE TABLE `qrtz_triggers`  (
   PRIMARY KEY (`SCHED_NAME`, `TRIGGER_NAME`, `TRIGGER_GROUP`) USING BTREE,
   INDEX `SCHED_NAME`(`SCHED_NAME` ASC, `JOB_NAME` ASC, `JOB_GROUP` ASC) USING BTREE,
   CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) REFERENCES `qrtz_job_details` (`SCHED_NAME`, `JOB_NAME`, `JOB_GROUP`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of qrtz_triggers
