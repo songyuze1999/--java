@@ -26,6 +26,12 @@ public class OrderInfoDetailVo {
     /** 商品名称 */
     private String productName;
 
+    /** 下单时的全款预售标识，兼容历史订单 */
+    private Boolean isPresale = false;
+
+    /** 下单时的预售发货说明 */
+    private String presaleDeliveryDesc = "";
+
     /** 规格属性id */
     private Integer attrValueId;
 

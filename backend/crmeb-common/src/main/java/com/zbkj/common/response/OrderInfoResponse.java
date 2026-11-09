@@ -53,6 +53,12 @@ public class OrderInfoResponse implements Serializable {
     @ApiModelProperty(value = "商品名称")
     private String storeName;
 
+    @ApiModelProperty(value = "下单时是否全款预售")
+    private Boolean isPresale = false;
+
+    @ApiModelProperty(value = "下单时的预售发货说明")
+    private String presaleDeliveryDesc = "";
+
     @ApiModelProperty(value = "商品价格")
     private BigDecimal price;
 

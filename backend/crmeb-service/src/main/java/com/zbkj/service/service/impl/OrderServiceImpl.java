@@ -458,6 +458,7 @@ public class OrderServiceImpl implements OrderService {
             orderInfoList.forEach(e -> {
                 OrderInfoResponse orderInfoResponse = new OrderInfoResponse();
                 orderInfoResponse.setStoreName(e.getProductName());
+                copyPresaleSnapshot(e, orderInfoResponse);
                 orderInfoResponse.setImage(e.getImage());
                 orderInfoResponse.setCartNum(e.getPayNum());
                 orderInfoResponse.setPrice(ObjectUtil.isNotNull(e.getVipPrice()) ? e.getVipPrice() : e.getPrice());
@@ -573,6 +574,7 @@ public class OrderServiceImpl implements OrderService {
         infoList.forEach(e -> {
             OrderInfoResponse orderInfoResponse = new OrderInfoResponse();
             orderInfoResponse.setStoreName(e.getProductName());
+            copyPresaleSnapshot(e, orderInfoResponse);
             orderInfoResponse.setImage(e.getImage());
             orderInfoResponse.setCartNum(e.getPayNum());
             orderInfoResponse.setPrice(ObjectUtil.isNotNull(e.getVipPrice()) ? e.getVipPrice() : e.getPrice());
@@ -839,6 +841,8 @@ public class OrderServiceImpl implements OrderService {
         infoVoList.forEach(e -> {
             OrderInfoResponse orderInfoResponse = new OrderInfoResponse();
             orderInfoResponse.setStoreName(e.getInfo().getProductName());
+            orderInfoResponse.setIsPresale(Boolean.TRUE.equals(e.getInfo().getIsPresale()));
+            orderInfoResponse.setPresaleDeliveryDesc(e.getInfo().getPresaleDeliveryDesc());
             orderInfoResponse.setImage(e.getInfo().getImage());
             orderInfoResponse.setCartNum(e.getInfo().getPayNum());
             orderInfoResponse.setPrice(e.getInfo().getPrice());
@@ -1424,6 +1428,8 @@ public class OrderServiceImpl implements OrderService {
             if (ObjectUtil.isNull(storeProduct)) {
                 throw new CrmebException("购买的商品信息不存在");
             }
+            // 发货承诺在确认页展示后不能静默变更，要求重新确认。
+            validatePresaleSnapshot(storeProduct, e);
             if (storeProduct.getIsDel()) {
                 throw new CrmebException("购买的商品已删除");
             }
@@ -1453,9 +1459,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    /** 将商品的全款预售承诺写入预下单快照。 */
+    private void fillPresaleSnapshot(StoreProduct product, OrderInfoDetailVo detail) {
+        boolean presale = product != null && Boolean.TRUE.equals(product.getIsPresale());
+        detail.setIsPresale(presale);
+        detail.setPresaleDeliveryDesc(presale ? StrUtil.nullToEmpty(product.getPresaleDeliveryDesc()) : "");
+    }
+
+    private void validatePresaleSnapshot(StoreProduct product, OrderInfoDetailVo detail) {
+        boolean presale = Boolean.TRUE.equals(product.getIsPresale());
+        String description = presale ? StrUtil.nullToEmpty(product.getPresaleDeliveryDesc()) : "";
+        if (presale != Boolean.TRUE.equals(detail.getIsPresale())
+                || (presale && !Objects.equals(description, detail.getPresaleDeliveryDesc()))) {
+            throw new CrmebException("商品预售信息已变更，请重新确认订单");
+        }
+    }
+
+    private void copyPresaleSnapshot(StoreOrderInfo source, OrderInfoResponse target) {
+        // 只读下单快照，不能用当前商品配置覆盖历史承诺。
+        OrderInfoDetailVo snapshot = StrUtil.isBlank(source.getInfo()) ? null
+                : JSONObject.parseObject(source.getInfo(), OrderInfoDetailVo.class);
+        boolean presale = snapshot != null && Boolean.TRUE.equals(snapshot.getIsPresale());
+        target.setIsPresale(presale);
+        target.setPresaleDeliveryDesc(presale ? StrUtil.nullToEmpty(snapshot.getPresaleDeliveryDesc()) : "");
+    }
+
     /**
      * 校验预下单商品信息
-     *
      * @param request 预下单请求参数
      * @return OrderInfoVo
      */
@@ -1524,6 +1554,7 @@ public class OrderServiceImpl implements OrderService {
                 OrderInfoDetailVo detailVo = new OrderInfoDetailVo();
                 detailVo.setProductId(storeProduct.getId());
                 detailVo.setProductName(storeProduct.getStoreName());
+                fillPresaleSnapshot(storeProduct, detailVo);
                 detailVo.setAttrValueId(attrValue.getId());
                 detailVo.setSku(attrValue.getSuk());
                 detailVo.setPrice(attrValue.getPrice());
@@ -1667,6 +1698,7 @@ public class OrderServiceImpl implements OrderService {
             OrderInfoDetailVo detailVo = new OrderInfoDetailVo();
             detailVo.setProductId(storeProduct.getId());
             detailVo.setProductName(storeProduct.getStoreName());
+            fillPresaleSnapshot(storeProduct, detailVo);
             detailVo.setAttrValueId(attrValue.getId());
             detailVo.setSku(attrValue.getSuk());
             detailVo.setPrice(attrValue.getPrice());
@@ -2076,6 +2108,7 @@ public class OrderServiceImpl implements OrderService {
             OrderInfoDetailVo tempDetailVo = new OrderInfoDetailVo();
             tempDetailVo.setProductId(storeProduct.getId());
             tempDetailVo.setProductName(storeProduct.getStoreName());
+            fillPresaleSnapshot(storeProduct, tempDetailVo);
             tempDetailVo.setAttrValueId(attrValue.getId());
             tempDetailVo.setSku(attrValue.getSuk());
             tempDetailVo.setPrice(attrValue.getPrice());

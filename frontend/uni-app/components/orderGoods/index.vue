@@ -2,17 +2,18 @@
 	<view class="orderGoods borRadius14">
 		<view class='total'>共{{ orderProNum?orderProNum:totalNmu}}件商品</view>
 		<view class='goodWrapper pad30'>
-			<view class='item acea-row row-between-wrapper' v-for="(item,index) in cartInfo" :key="index"
+			<view class='item acea-row row-between-wrapper' :class="{ 'presale-item': item.isPresale }" v-for="(item,index) in cartInfo" :key="index"
 				@click="jumpCon(item.productId)">
 				<view class='pictrue'>
 					<image :src='item.image'></image>
 				</view>
 				<view class='text'>
 					<view class='acea-row row-between-wrapper'>
-						<view class='name line1'>{{item.productName ? item.productName : item.storeName}}</view>
+						<view class='name line1'><text v-if="item.isPresale" class="presale-tag">预售</text>{{item.productName ? item.productName : item.storeName}}</view>
 						<view class='num'>x {{item.payNum ? item.payNum : item.cartNum}}</view>
 					</view>
 					<view class='attr line1' v-if="item.sku">{{item.sku}}</view>
+					<view v-if="item.isPresale" class="presale-delivery">预售发货：{{item.presaleDeliveryDesc}}</view>
 					<view class='money'>￥{{item.price}}</view>
 					<view class='evaluate' v-if='item.isReply==0 && evaluate==2' @click.stop="evaluateTap(item)">评价
 					</view>
@@ -97,6 +98,13 @@
 	.money{
 		@include price_color(theme);
 	}
+	.orderGoods .goodWrapper .item.presale-item {
+		height: auto;
+		min-height: 180rpx;
+		padding-top: 24rpx;
+		padding-bottom: 24rpx;
+	}
+
 	.orderGoods .total {
 		width: 100%;
 		height: 86rpx;

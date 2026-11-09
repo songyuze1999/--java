@@ -5,7 +5,7 @@
 				<image :src="item.image" mode=""></image>
 			</view>
 			<view class="pictxt">
-				<view class="text line2">{{item.storeName}}</view>
+				<view class="text line2"><text v-if="item.isPresale" class="presale-tag">预售</text>{{item.storeName}}</view>
 				<view class="bottom acea-row row-between-wrapper">
 					<view class="money">
 						<text class="sign">￥</text>{{item.price}} 

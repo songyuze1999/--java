@@ -5,7 +5,7 @@
 				<image :src="item.recommend_image" mode="aspectFill" v-if="item.recommend_image"></image>
 				<image :src="item.image" mode="aspectFill" v-else></image>
 			</view>
-			<view class="text line2">{{item.storeName}}</view>
+			<view class="text line2"><text v-if="item.isPresale" class="presale-tag">预售</text>{{item.storeName}}</view>
 			<view class="bottom acea-row row-between-wrapper">
 				<view class="sales acea-row row-middle">
 					<view class="money" :class="item.price.length>8?'lengthStr':''"><text>￥</text>{{item.price}} <text class="item_sales">已售 {{item.sales}}</text> </view>

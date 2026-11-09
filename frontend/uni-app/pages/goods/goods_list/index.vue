@@ -46,7 +46,7 @@
 								v-if="item.activityH5 && item.activityH5.type === '3'">拼团</span>
 						</view>
 						<view class='text' :class='is_switch==true?"":"on"'>
-							<view class='name line1'>{{item.storeName}}</view>
+							<view class='name line1'><text v-if="item.isPresale" class="presale-tag">预售</text>{{item.storeName}}</view>
 							<view class='x-money' :class='is_switch==true?"":"on"'>￥<text
 									class='num'>{{item.price}}</text></view>
 							<view class='sales acea-row row-between-wrapper' :class='is_switch==true?"":"on"'>

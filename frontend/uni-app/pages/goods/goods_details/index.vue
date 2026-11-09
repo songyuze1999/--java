@@ -81,6 +81,10 @@
 									<view class='iconfont icon-fenxiang share-icon' @click="listenerActionSheet"></view>
 								</view>
 								<view class='introduce skeleton-rect share-introduce'>{{productInfo.storeName}}</view>
+								<view v-if="productInfo.isPresale" class="presale-notice">
+									<text class="presale-tag">预售</text>
+									<text>全款预售 · {{productInfo.presaleDeliveryDesc}}</text>
+								</view>
 								<view class='label acea-row row-between-wrapper'>
 									<view class="skeleton-rect">原价:￥{{attr.productSelect.otPrice || 0}}</view>
 									<view class="skeleton-rect">
@@ -657,6 +661,7 @@
 			protection_list: diyProtectionList.value,
 			label_list: pInfo.labelList || pInfo.label_list || [],
 			cart_button: type.value === 'normal',
+			// 全款预售使用 isPresale 展示，保留普通购买流程。
 			presale: false,
 		};
 	});

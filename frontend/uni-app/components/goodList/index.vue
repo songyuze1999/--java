@@ -10,7 +10,7 @@
 				</view>
 				<view class='underline'>
 					<view class='text'>
-						<view class='line1'>{{item.storeName}}</view>
+						<view class='line1'><text v-if="item.isPresale" class="presale-tag">预售</text>{{item.storeName}}</view>
 						<view class='money'>￥<text class='num'>{{item.price}}</text></view>
 						<view class='sales-money acea-row row-middle'>
 							<text class='num' v-if="status == 0">已售{{Number(item.sales)|| 0}}{{item.unitName}}</text>

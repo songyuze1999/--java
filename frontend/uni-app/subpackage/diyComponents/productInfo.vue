@@ -163,6 +163,10 @@
 
         <!-- 信息区域 -->
         <view class="info-box" :style="{ background: infoBoxBg }">
+          <view v-if="productData.isPresale" class="presale-notice">
+            <text class="presale-tag">预售</text>
+            <text>全款预售 · {{ productData.presaleDeliveryDesc }}</text>
+          </view>
           <!-- 规格样式 0 & 1: 顶部 -->
           <view
             v-if="(specStyle === 0 || specStyle === 1) && skuList.length > 0"

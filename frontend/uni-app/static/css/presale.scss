@@ -1,0 +1,33 @@
+.presale-tag {
+  display: inline-block;
+  padding: 2rpx 8rpx;
+  margin-right: 8rpx;
+  border: 1rpx solid #c65d14;
+  border-radius: 4rpx;
+  color: #a84b0c;
+  background: #fff5e9;
+  font-size: 22rpx;
+  font-weight: normal;
+  line-height: 30rpx;
+  vertical-align: middle;
+}
+
+.presale-delivery,
+.presale-notice {
+  color: #935119;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.presale-delivery {
+  margin-top: 8rpx;
+}
+
+.presale-notice {
+  padding: 16rpx;
+  margin: 16rpx 0;
+  border-radius: 8rpx;
+  background: #fff5e9;
+}

@@ -53,7 +53,7 @@
 								<image :src='items.image'></image>
 							</view>
 							<view class='text acea-row row-between'>
-								<view class='name line2'>{{items.storeName}}</view>
+								<view class='name line2'><text v-if="items.isPresale" class="presale-tag">预售</text>{{items.storeName}}</view>
 								<view class='money'>
 									<view :style="[{'font-size':items.price.length>8?'24rpx':'28rpx'}]" >￥{{items.price}}</view>
 									<view>x{{items.cartNum}}</view>

@@ -6,7 +6,7 @@ crmeb:
   jwt-secret: "${CRMEB_JWT_SECRET:}"
 
 server:
-  port: 20610
+  port: 8081
 
 spring:
   profiles:

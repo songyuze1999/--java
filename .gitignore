@@ -17,6 +17,10 @@ backend/LOG_HOME_IS_UNDEFINED
 # Local key files (at any directory level)
 [kK][eE][yY].[tT][xX][tT]
 
+# Local certificate containers (may include private keys)
+*.[pP]12
+*.[pP][fF][xX]
+
 # README documents (at any directory level)
 [rR][eE][aA][dD][mM][eE]*
 

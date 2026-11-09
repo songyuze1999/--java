@@ -332,6 +332,7 @@ onHide(() => {});
 	/* #endif */
 	@import 'static/css/guildford.css';
 	@import 'static/css/style.scss';
+	@import 'static/css/presale.scss';
 	@import 'static/css/unocss.css';
 	@import 'static/fonts/font.css';
 

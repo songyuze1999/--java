@@ -299,6 +299,7 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
 
         StoreProduct storeProduct = new StoreProduct();
         BeanUtils.copyProperties(request, storeProduct);
+        normalizePresaleConfig(storeProduct);
         storeProduct.setCateId(normalizeIdString(storeProduct.getCateId()));
         storeProduct.setId(null);
         storeProduct.setAddTime(CrmebDateUtil.getNowTime());
@@ -520,6 +521,12 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
 
         StoreProduct storeProduct = new StoreProduct();
         BeanUtils.copyProperties(storeProductRequest, storeProduct);
+        // 兼容未传预售字段的旧管理端，避免普通编辑清除预售配置。
+        if (storeProductRequest.getIsPresale() == null) {
+            storeProduct.setIsPresale(tempProduct.getIsPresale());
+            storeProduct.setPresaleDeliveryDesc(tempProduct.getPresaleDeliveryDesc());
+        }
+        normalizePresaleConfig(storeProduct);
         storeProduct.setCateId(normalizeIdString(storeProduct.getCateId()));
 
         // 设置Activity活动
@@ -653,6 +660,25 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
         });
 
         return execute;
+    }
+
+    /** 校验全款预售配置，现货商品不保留发货说明。 */
+    private void normalizePresaleConfig(StoreProduct product) {
+        boolean presale = Boolean.TRUE.equals(product.getIsPresale());
+        product.setIsPresale(presale);
+        if (!presale) {
+            product.setPresaleDeliveryDesc("");
+            return;
+        }
+        String description = product.getPresaleDeliveryDesc();
+        if (StrUtil.isBlank(description)) {
+            throw new CrmebException("请填写预售发货说明");
+        }
+        description = description.trim();
+        if (description.length() > 255) {
+            throw new CrmebException("预售发货说明不能超过255个字符");
+        }
+        product.setPresaleDeliveryDesc(description);
     }
 
     /**
@@ -1226,7 +1252,8 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
         PageHelper.startPage(pageParamRequest.getPage(), pageParamRequest.getLimit());
         LambdaQueryWrapper<StoreProduct> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.select(StoreProduct::getId, StoreProduct::getImage, StoreProduct::getStoreName,
-                StoreProduct::getPrice, StoreProduct::getOtPrice, StoreProduct::getActivity, StoreProduct::getCateId);
+                StoreProduct::getPrice, StoreProduct::getOtPrice, StoreProduct::getActivity, StoreProduct::getCateId,
+                StoreProduct::getIsPresale, StoreProduct::getPresaleDeliveryDesc);
         switch (type) {
             case Constants.INDEX_RECOMMEND_BANNER: //精品推荐
                 lambdaQueryWrapper.eq(StoreProduct::getIsBest, true);
@@ -1269,7 +1296,8 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
         lqw.select(StoreProduct::getId, StoreProduct::getStoreName, StoreProduct::getImage, StoreProduct::getPrice,
                 StoreProduct::getActivity, StoreProduct::getSales, StoreProduct::getFicti, StoreProduct::getUnitName,
                 StoreProduct::getFlatPattern, StoreProduct::getStock, StoreProduct::getCateId,
-                StoreProduct::getOtPrice, StoreProduct::getSpecType);
+                StoreProduct::getOtPrice, StoreProduct::getSpecType,
+                StoreProduct::getIsPresale, StoreProduct::getPresaleDeliveryDesc);
 
         lqw.eq(StoreProduct::getIsRecycle, false);
         lqw.eq(StoreProduct::getIsDel, false);
@@ -1337,7 +1365,8 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
         lqw.select(StoreProduct::getId, StoreProduct::getImage, StoreProduct::getStoreName, StoreProduct::getSliderImage,
                 StoreProduct::getOtPrice, StoreProduct::getStock, StoreProduct::getSales, StoreProduct::getPrice, StoreProduct::getActivity,
                 StoreProduct::getFicti, StoreProduct::getIsSub, StoreProduct::getBrowse, StoreProduct::getUnitName,
-                StoreProduct::getBarCode, StoreProduct::getCateId, StoreProduct::getGuaranteeIds);
+                StoreProduct::getBarCode, StoreProduct::getCateId, StoreProduct::getGuaranteeIds,
+                StoreProduct::getIsPresale, StoreProduct::getPresaleDeliveryDesc);
         lqw.eq(StoreProduct::getId, id);
         lqw.eq(StoreProduct::getIsRecycle, false);
         lqw.eq(StoreProduct::getIsDel, false);
@@ -1467,7 +1496,8 @@ public class StoreProductServiceImpl extends ServiceImpl<StoreProductDao, StoreP
         if (count < 4) {
             return CollUtil.newArrayList();
         }
-        queryWrapper.select("id", "store_name", "image", "price", "ot_price", "(sales + ficti) as sales, cate_id");
+        queryWrapper.select("id", "store_name", "image", "price", "ot_price", "(sales + ficti) as sales, cate_id",
+                "is_presale", "presale_delivery_desc");
         queryWrapper.orderByDesc("sales");
         List<StoreProduct> storeProducts = dao.selectList(queryWrapper);
         // 查询活动边框配置信息, 并赋值给商品response 重复添加的商品数据会根据数据添加持续覆盖后的为准

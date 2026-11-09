@@ -37,6 +37,9 @@ public class IndexProductResponse {
     @ApiModelProperty(value = "商品名称")
     private String storeName;
 
+    @ApiModelProperty(value = "是否全款预售")
+    private Boolean isPresale;
+
     @ApiModelProperty(value = "商品价格")
     private BigDecimal price;
 

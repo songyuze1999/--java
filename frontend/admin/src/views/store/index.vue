@@ -101,6 +101,10 @@
           v-if="checkedCities.includes('商品名称')"
           :show-overflow-tooltip="true"
         >
+          <template #default="scope">
+            <el-tag v-if="scope.row.isPresale" class="mr10" size="small" type="warning">预售</el-tag>
+            {{ scope.row.storeName }}
+          </template>
         </el-table-column>
         <el-table-column prop="price" label="商品售价" min-width="90" v-if="checkedCities.includes('商品售价')" />
         <el-table-column prop="sales" label="销量" min-width="90" v-if="checkedCities.includes('销量')" />

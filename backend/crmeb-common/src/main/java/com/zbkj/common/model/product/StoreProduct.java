@@ -50,6 +50,12 @@ public class StoreProduct implements Serializable {
     @ApiModelProperty(value = "商品名称")
     private String storeName;
 
+    @ApiModelProperty(value = "是否全款预售")
+    private Boolean isPresale;
+
+    @ApiModelProperty(value = "预售发货说明")
+    private String presaleDeliveryDesc;
+
     @ApiModelProperty(value = "商品简介")
     private String storeInfo = "";
 

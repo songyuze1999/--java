@@ -8,12 +8,12 @@ crmeb:
   asyncConfig: false #是否同步config表数据到redis
   asyncWeChatProgramTempList: false #是否同步小程序公共模板库
   jwt-secret: "${CRMEB_JWT_SECRET:}"
-  imagePath: /你的站点绝对路径 建议jar包位置/ # 服务器图片路径配置 斜杠结尾
+  imagePath: /E:\\crmeb_java\\backend/ # 服务器图片路径配置 斜杠结尾
   captchaOn: false # 是否开启行为验证码
   demoSite: false # 是否演示站点 所有手机号码都会掩码
 
 server:
-  port: 20600
+  port: 8080
 
 spring:
   profiles:

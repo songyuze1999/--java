@@ -9,10 +9,10 @@
 // +----------------------------------------------------------------------
 
 // 请求域名 格式： https://您的域名
-export const HTTP_REQUEST_URL = 'https://www.xiaocaixu1618.top';
-
+export const HTTP_REQUEST_URL = 'http://localhost:8081';
+//export const HTTP_REQUEST_URL = 'https://www.xiaocaixu1618.top';
 export const HTTP_H5_URL = 'https://www.xiaocaixu1618.top';
-
+//export const HTTP_H5_URL = 'https://www.xiaocaixu1618.top';
 export const HEADER = {
 	'content-type': 'application/json',
 	'X-Source': 'df07addc462f7f8f'

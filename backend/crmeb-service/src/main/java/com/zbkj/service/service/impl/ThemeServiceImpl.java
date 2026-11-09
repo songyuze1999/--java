@@ -407,6 +407,7 @@ public class ThemeServiceImpl extends ServiceImpl<ThemeDao, Theme> implements Th
         ThemeProductResponse response = new ThemeProductResponse();
         response.setId(storeProduct.getId());
         response.setStoreName(storeProduct.getStoreName());
+        response.setIsPresale(Boolean.TRUE.equals(storeProduct.getIsPresale()));
         response.setCateId(storeProduct.getCateId());
         response.setImage(storeProduct.getImage());
         response.setSales(String.valueOf(storeProduct.getSales() == null ? 0 : storeProduct.getSales()));
@@ -708,6 +709,7 @@ public class ThemeServiceImpl extends ServiceImpl<ThemeDao, Theme> implements Th
         JSONObject item = new JSONObject(true);
         item.put("id", product.getId());
         item.put("store_name", getDefaultString(product.getStoreName()));
+        item.put("isPresale", Boolean.TRUE.equals(product.getIsPresale()));
         item.put("cate_id", getDefaultString(product.getCateId()));
         item.put("image", getDefaultString(product.getImage()));
         item.put("sales", getProductSales(product, appendFicti));

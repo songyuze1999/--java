@@ -56,6 +56,28 @@
             </el-form-item>
           </el-col>
           <el-col v-bind="grid2">
+            <el-form-item label="商品模式：" prop="isPresale">
+              <el-radio-group v-model="formValidate.isPresale" :disabled="isDisabled" @change="onPresaleChange">
+                <el-radio :label="false">现货</el-radio>
+                <el-radio :label="true">预售（全款）</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col v-if="formValidate.isPresale" v-bind="grid2">
+            <el-form-item label="发货说明：" prop="presaleDeliveryDesc">
+              <el-input
+                v-model="formValidate.presaleDeliveryDesc"
+                class="from-ipt-width"
+                type="textarea"
+                :rows="3"
+                maxlength="255"
+                show-word-limit
+                placeholder="例如：付款后30天内发货，或预计12月15日前发货"
+                :disabled="isDisabled"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col v-bind="grid2">
             <el-form-item label="商品分类：" prop="cateIds">
               <el-cascader
                 class="from-ipt-width"
@@ -485,6 +507,18 @@ const grid = {
   xs: 24,
 };
 const ruleValidate = {
+  presaleDeliveryDesc: [{
+    validator: (rule, value, callback) => {
+      if (formValidate.isPresale && (!value || !value.trim())) {
+        callback(new Error('请输入预售发货说明'));
+      } else if (value && value.length > 255) {
+        callback(new Error('预售发货说明不能超过255个字符'));
+      } else {
+        callback();
+      }
+    },
+    trigger: 'blur',
+  }],
   storeName: [
     { required: true, message: '请输入商品名称', trigger: 'blur' },
     { max: 30, message: '商品名称长度不能超过30个字', trigger: 'blur' },
@@ -517,6 +551,10 @@ const guaranteeIdsList = ref([]); // 服务保障选择id列表
 const oneFormBatch = ref([Object.assign({}, defaultObj.attrValue[0])]);
 // 表单 ref
 const formValidateRef = ref(null);
+function onPresaleChange(value) {
+  if (!value) formValidate.presaleDeliveryDesc = '';
+  formValidateRef.value?.clearValidate('presaleDeliveryDesc');
+}
 const addTemplatesRef = ref(null);
 // 原 methods 中引用但未声明的变量（保留原逻辑）
 const loading = ref(false);
@@ -803,6 +841,8 @@ function getInfo() {
         sliderImage: info.sliderImage,
         sliderImages: JSON.parse(info.sliderImage),
         storeName: info.storeName,
+        isPresale: info.isPresale === true || info.isPresale === 1,
+        presaleDeliveryDesc: info.presaleDeliveryDesc || '',
         keyword: info.keyword,
         cateIds: parseCategoryIds(info.cateId), // 商品分类id
         cateId: info.cateId, // 商品分类id传值
@@ -1005,6 +1045,12 @@ function getFromData() {
 }
 // 提交
 const handleSubmit = Debounce(function (name) {
+  formValidate.presaleDeliveryDesc = formValidate.isPresale ? formValidate.presaleDeliveryDesc.trim() : '';
+  if (formValidate.isPresale && (!formValidate.presaleDeliveryDesc || formValidate.presaleDeliveryDesc.length > 255)) {
+    currentTab.value = '0';
+    ElMessage.warning(!formValidate.presaleDeliveryDesc ? '请输入预售发货说明' : '预售发货说明不能超过255个字符');
+    return;
+  }
   onChangeGroup();
   getFromData();
   formValidateRef.value.validate((valid) => {

@@ -3,6 +3,8 @@ export const defaultObj = {
   sliderImages: [],
   sliderImage: '',
   name: '',
+  isPresale: false,
+  presaleDeliveryDesc: '',
   intro: '',
   keyword: '',
   cateIds: [], // 商品分类id

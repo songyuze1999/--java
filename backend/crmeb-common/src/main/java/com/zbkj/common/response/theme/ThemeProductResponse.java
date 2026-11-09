@@ -24,6 +24,9 @@ public class ThemeProductResponse implements Serializable {
     @ApiModelProperty(value = "商品名称")
     private String storeName;
 
+    @ApiModelProperty(value = "是否全款预售")
+    private Boolean isPresale;
+
     @JsonProperty(value = "cate_id")
     @ApiModelProperty(value = "分类ID")
     private String cateId;

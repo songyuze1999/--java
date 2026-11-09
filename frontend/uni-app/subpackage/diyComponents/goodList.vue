@@ -49,7 +49,7 @@
                 <text v-if="item.brand_name" class="brand-tag">{{
                   item.brand_name
                 }}</text>
-                {{ item.store_name }}
+                <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
               </view>
               <view
                 class="flex items-end flex-wrap mt-8 w-full"
@@ -200,7 +200,7 @@
                     <text v-if="item.brand_name" class="brand-tag">{{
                       item.brand_name
                     }}</text>
-                    {{ item.store_name }}
+                    <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
                   </view>
                   <view
                     class="flex items-end flex-wrap mt-8 w-full"
@@ -340,7 +340,7 @@
                     <text v-if="item.brand_name" class="brand-tag">{{
                       item.brand_name
                     }}</text>
-                    {{ item.store_name }}
+                    <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
                   </view>
                   <view
                     class="flex items-end flex-wrap mt-8 w-full"
@@ -483,7 +483,7 @@
                   <text v-if="item.brand_name" class="brand-tag">{{
                     item.brand_name
                   }}</text>
-                  {{ item.store_name }}
+                  <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
                 </view>
                 <baseMoney
                   :money="item.price"
@@ -526,7 +526,7 @@
                 <text v-if="item.brand_name" class="brand-tag">{{
                   item.brand_name
                 }}</text>
-                {{ item.store_name }}
+                <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
               </view>
               <view class="flex-between-center mt-14">
                 <baseMoney
@@ -587,7 +587,7 @@
                 <text v-if="item.brand_name" class="brand-tag">{{
                   item.brand_name
                 }}</text>
-                {{ item.store_name }}
+                <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
               </view>
               <view
                 class="flex items-end flex-wrap mt-8 w-full"
@@ -741,7 +741,7 @@
                   <text v-if="item.brand_name" class="brand-tag">{{
                     item.brand_name
                   }}</text>
-                  {{ item.store_name }}
+                  <text v-if="item.isPresale" class="presale-tag">预售</text>{{ item.store_name }}
                 </view>
                 <view class="flex-between-center mt-8">
                   <baseMoney

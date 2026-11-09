@@ -13,7 +13,7 @@
 						<view class="text-info text-add">
 							<view>
 								<view class="title line2" :style="[titleColor]" v-if="titleShow">
-									<span>{{ item.storeName }}</span>
+									<text v-if="item.isPresale" class="presale-tag">预售</text><span>{{ item.storeName }}</span>
 								</view>
 							</view>
 							<view v-if="item.productTags && item.productTags.locationUnderTitle.length">
@@ -44,7 +44,7 @@
 						</view>
 						<view class="text-info">
 							<view class="title line2" :style="[titleColor]" v-if="titleShow">
-								<span>{{ item.storeName }}</span>
+								<text v-if="item.isPresale" class="presale-tag">预售</text><span>{{ item.storeName }}</span>
 							</view>
 							<view v-if="item.productTags && item.productTags.locationUnderTitle.length">
 								<text
@@ -73,7 +73,7 @@
 						</view>
 						<view class="text-info">
 							<view class="title line2" :style="[titleColor]" v-if="titleShow">
-								<span>{{ item.storeName }}</span>
+								<text v-if="item.isPresale" class="presale-tag">预售</text><span>{{ item.storeName }}</span>
 							</view>
 							<view v-if="item.productTags && item.productTags.locationUnderTitle.length">
 								<text
@@ -101,7 +101,7 @@
 							</easy-loadimage>
 						</view>
 						<view class="name line2" :style="[titleColor]" v-if="titleShow">
-							<span>{{item.storeName}}</span>
+							<text v-if="item.isPresale" class="presale-tag">预售</text><span>{{item.storeName}}</span>
 						</view>
 						<view style="padding: 0 8px;"
 							v-if="item.productTags && item.productTags.locationUnderTitle.length">

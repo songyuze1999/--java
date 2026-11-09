@@ -161,6 +161,10 @@
                     </div>
                     <div style="width: 408px">
                       <div class="line1 mb10">{{ scope.row.info.productName }}</div>
+                      <div v-if="scope.row.info.isPresale" class="mb10">
+                        <el-tag size="small" type="warning">预售</el-tag>
+                        <span class="ml10" style="white-space: pre-wrap; overflow-wrap: anywhere">{{ scope.row.info.presaleDeliveryDesc }}</span>
+                      </div>
                       <div class="line1 color-909399 line-heightOne">规格：{{ scope.row.info.sku }}</div>
                     </div>
                   </div>
