@@ -1,0 +1,25 @@
+.idea/
+.claude/
+frontend/uni-app/unpackage
+Crmeb-2022-01-04.log
+crmeb_front_log
+backend/LOG_HOME_IS_UNDEFINED
+*.
+*.
+.DS_Store
+
+# PC frontend is maintained outside this repository
+/frontend/[pP][cC]/
+
+# Vite generated configuration bundles
+/frontend/admin/vite.config.js.timestamp-*.mjs
+
+# Local key files (at any directory level)
+[kK][eE][yY].[tT][xX][tT]
+
+# README documents (at any directory level)
+[rR][eE][aA][dD][mM][eE]*
+
+# Local AI context documents (at any directory level)
+[aA][gG][eE][nN][tT].[mM][dD]
+[aA][gG][eE][nN][tT][sS].[mM][dD]

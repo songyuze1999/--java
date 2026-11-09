@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbkj.service.dao.StoreCouponUserDao">
+
+
+    <select id="getListByPreOrderNo" resultType="com.zbkj.common.model.coupon.StoreCouponUser" parameterType="Map">
+        SELECT *
+        FROM eb_store_coupon_user
+        where
+        `status` = 0
+        AND min_price &lt;= #{maxPrice}
+        AND start_time &lt; #{date} AND end_time &gt; #{date}
+        AND uid = #{uid}
+        AND (use_type = 1
+                 or (use_type = 2 and
+        <foreach collection="productIds" item="proId" open="(" close=")" index="index" separator="or">
+            find_in_set(#{proId}, primary_key)
+        </foreach>
+                 )
+                 or (use_type = 3 and
+        <foreach collection="categoryIdList" item="cateId" open="(" close=")" index="index" separator="or">
+            find_in_set(#{cateId}, primary_key)
+        </foreach>
+                 )
+            )
+        order by id desc
+    </select>
+    <select id="findCouponReceiveRecordList" resultType="com.zbkj.common.model.coupon.StoreCouponUser">
+        SELECT scu.*
+        FROM eb_store_coupon_user AS scu
+        left join eb_user as u on scu.uid = u.uid
+        <where>
+            <if test="name != '' and name != null ">
+                and scu.name = #{name}
+            </if>
+            <if test="couponId != null ">
+                and scu.coupon_id = #{couponId}
+            </if>
+            <if test="status != null">
+                and scu.status = #{status}
+            </if>
+            <if test="keywords != '' and keywords != null ">
+                and (
+                scu.uid like CONCAT('%',#{keywords},'%') or
+                u.nickname like CONCAT('%',#{keywords},'%') or
+                u.phone like CONCAT('%',#{keywords},'%')
+                )
+            </if>
+            <if test="uid != null ">
+                and scu.uid = #{uid}
+            </if>
+            <if test="nickname != '' and nickname != null ">
+                and u.nickname like CONCAT('%',#{nickname},'%')
+            </if>
+            <if test="phone != '' and phone != null ">
+                and u.phone like CONCAT('%',#{phone},'%')
+            </if>
+        </where>
+        order by scu.id desc
+    </select>
+
+</mapper>

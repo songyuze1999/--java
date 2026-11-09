@@ -1,0 +1,1631 @@
+<template>
+	<view :data-theme="theme" :style="colorStyle">
+		<skeleton :show="showSkeleton" :isNodes="isNodes" ref="skeleton" loading="chiaroscuro" selector="skeleton"
+			bgcolor="#FFF"></skeleton>
+		<view class="skeleton" :style="{visibility: showSkeleton ? 'hidden' : 'visible'}">
+			<!-- 头部 -->
+			<view class='navbar' :class="opacity>0.6?'bgwhite':''">
+				<view class='navbarH' :style='"height:"+navH+"rpx;"'>
+					<view class='navbarCon acea-row' :style="{ paddingRight: navbarRight + 'px' }">
+						<!-- #ifdef MP -->
+						<view class="select_nav flex justify-center align-center" id="home" :style="{ top: homeTop + 'rpx' }">
+							<text class="iconfont icon-fanhui2 px-20" @tap="returns"></text>
+							<text class="iconfont icon-gengduo5 px-20" @tap="showNav"></text>
+							<text class="nav_line"></text>
+						</view>
+						<!-- #endif -->
+						<!-- #ifdef H5 || APP-PLUS -->
+						<view id="home" class="home acea-row row-center-wrapper iconfont icon-xiangzuo h5_back"
+							:class="opacity>0.5?'on':''" :style="{ top: homeTop + 'rpx' }" v-if="returnShow" @tap="returns">
+						</view>
+						<!-- #endif -->
+						<view class="header flex justify-between align-center">
+							<view class="item" :class="navActive === index ? 'on' : ''" v-for="(item,index) in navList" :key='index'
+								@tap="tap(item,index)">
+								{{ item }}
+							</view>
+						</view>
+						<!-- #ifdef H5 || APP-PLUS -->
+						<view class="right_select" :style="{ top: homeTop + 'rpx' }" @tap="showNav">
+							<text class="iconfont icon-gengduo2"></text>
+						</view>
+						<!-- #endif -->
+					</view>
+				</view>
+			</view>
+			<view class="dialog_nav" :style='"top:"+navH+"rpx;"' v-show="currentPage">
+				<view class="dialog_nav_item" :class="item.after" v-for="(item,index) in selectNavList" :key="index"
+					@click="linkPage(item.url)">
+					<text class="iconfont" :class="item.icon"></text>
+					<text class="pl-20">{{item.name}}</text>
+				</view>
+			</view>
+			<view class='product-con'>
+				<scroll-view :scroll-top="scrollTop" scroll-y='true' scroll-with-animation="true"
+					:style="'height:'+height+'px;'" @scroll="scroll">
+					<view id="past0">
+						<productConSwiper :imgUrls='imgUrls' class="skeleton-rect" :videoline="videoLink"></productConSwiper>
+						<view class='nav acea-row row-between-wrapper mb30 skeleton-rect'>
+							<view class='money'>￥<text class='num'>{{attribute.productSelect.price}}</text><text
+									class='y-money'>￥{{attribute.productSelect.otPrice}}</text></view>
+							<view class='acea-row row-middle'>
+								<view class='time flex' v-if="status == 2">
+									<view>
+										<text class="iconfont icon-miaosha1"></text>
+										<text class="pl-06" style="font-size: 26rpx;">距结束:</text>
+									</view>
+									<countDown :bgColor="bgColor" :is-day="false" :tip-text="' '" :day-text="' '" :hour-text="' : '"
+										:minute-text="' : '" :second-text="' '" :datatime="datatime"></countDown>
+								</view>
+							</view>
+						</view>
+						<view class="pad30 mb30">
+							<view class='wrapper borRadius14 mb30'>
+								<view class='introduce acea-row row-between'>
+									<view class='infor skeleton-rect'> {{storeInfo.storeName}}</view>
+									<view class='iconfont icon-fenxiang' @click="listenerActionSheet"></view>
+								</view>
+								<view class='label acea-row row-middle'>
+									<view class='stock skeleton-rect'>
+										累计销售：{{parseFloat(storeInfo.sales) + parseFloat(storeInfo.ficti) || 0}}{{storeInfo.unitName}}</view>
+									<view class="skeleton-rect">限量:
+										{{ attribute.productSelect.quota ? attribute.productSelect.quota : 0 }} {{storeInfo.unitName}}
+									</view>
+								</view>
+							</view>
+							<view class='attribute mb30 borRadius14'>
+								<!-- 规格 -->
+								<view class="p-24" @click="selecAttr">
+									<view class="acea-row row-between-wrapper">
+										<view class="line1 skeleton-rect">{{attrTxt}}：
+											<text class='atterTxt'>{{attrValue}}</text>
+										</view>
+										<view class='iconfont icon-jiantou'></view>
+									</view>
+									<view class="acea-row row-between-wrapper" style="margin-top:7px;padding-left:55px;"
+										v-if="skuImage.length > 1">
+										<view class="flex">
+											<image :src="item" v-for="(item,index) in skuImage.slice(0,4)" :key="index" class="attrImg">
+											</image>
+										</view>
+										<view class="switchTxt">共{{skuArr.length}}种规格可选</view>
+									</view>
+								</view>
+								<!-- 服务保障 -->
+								<view v-if="guaranteeList.length > 0" class="acea-row row-between-wrapper p-24"
+									@click="handleToGgle(true)">
+									<view class="line1 skeleton-fillet">
+										<text class="">保&nbsp;&nbsp;&nbsp;障：</text>
+										<text class="atterTxt skeleton-fillet" v-for="(item, index) in guaranteeList"
+											:key="index">{{ item.name }} ·
+										</text>
+									</view>
+									<view class="iconfont icon-jiantou"></view>
+								</view>
+							</view>
+							<view class='userEvaluation' id="past1">
+								<view class='title acea-row row-between-wrapper'
+									:style="replyCount==0?'border-bottom-left-radius:14rpx;border-bottom-right-radius:14rpx;':''">
+									<view>用户评价({{replyCount}})</view>
+									<navigator :render-link="false" class='praise' hover-class='none'
+										:url="'/pages/goods/goods_comment_list/index?productId='+ storeInfo.productId">
+										<text class='font_color'>{{replyChance}}%</text>好评率
+										<text class='iconfont icon-jiantou'></text>
+									</navigator>
+								</view>
+								<userEvaluation :reply="reply" v-if="replyCount"></userEvaluation>
+							</view>
+						</view>
+					</view>
+					<view class='product-intro' id="past2">
+						<view class='title'>
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/xzuo.png'"></image>
+							<span class="sp">产品详情</span>
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/xyou.png'"></image>
+						</view>
+						<view class='conter'>
+							<mp-html :content="storeInfo.content" ref="article" :tag-style="tagStyle"></mp-html>
+						</view>
+					</view>
+					<view style='height:120rpx;'></view>
+				</scroll-view>
+				<view class='footer acea-row row-between-wrapper'>
+					<!-- #ifdef MP -->
+					<button hover-class='none' class='item skeleton-rect' @click="onClickService"
+						v-if="chatConfig.telephone_service_switch === 'open'">
+						<view class='iconfont icon-kefu'></view>
+						<view>客服</view>
+					</button>
+					<template v-else>
+						<button open-type="contact" hover-class='none' class='item skeleton-rect'
+							v-if="chatConfig.wx_chat_independent=='open'">
+							<view class='iconfont icon-kefu'></view>
+							<view>客服</view>
+						</button>
+						<button class="item" hover-class='none' @click="wxChatService" v-else>
+							<view class='iconfont icon-kefu'></view>
+							<text>联系客服</text>
+						</button>
+					</template>
+					<!-- #endif -->
+					<!-- #ifndef MP -->
+					<navigator :render-link="false" hover-class="none" class="item skeleton-rect" @click="onClickService">
+						<view class="iconfont icon-kefu"></view>
+						<view>客服</view>
+					</navigator>
+					<!-- #endif -->
+					<view @tap='setCollect' class='item skeleton-rect'>
+						<view class='iconfont icon-shoucang1' v-if="userCollect"></view>
+						<view class='iconfont icon-shoucang' v-else></view>
+						<view>收藏</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect" v-if="dataShow == 0">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="buy bnts">立即购买</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect"
+						v-if="status == 2 && attribute.productSelect.quota>0 &&  datatime > new Date().getTime()/1000">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="buy bnts" @tap="goCat">立即购买</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect"
+						v-if="status == 2 && (attribute.productSelect.quota <= 0) &&  datatime > new Date().getTime()/1000">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="bnts bg-color-hui">已售罄</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect" v-if="status == 0">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="buy bnts bg-color-hui">已关闭</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect" v-if="status == 1">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="buy bnts bg-color-hui">未开始</view>
+					</view>
+					<view class="bnt acea-row skeleton-rect" v-if="status == 2 && new Date().getTime()/1000 - datatime >=0">
+						<view class="joinCart bnts" @tap="openAlone" v-if="masterStatus !=='soldOut'">单独购买</view>
+						<view class="bg-color-hui bnts radius" v-if="masterStatus =='soldOut'">单独购买</view>
+						<view class="buy bnts bg-color-hui">已结束</view>
+					</view>
+				</view>
+			</view>
+			<!-- <shareRedPackets :sharePacket="sharePacket" @listenerActionSheet="listenerActionSheet" @closeChange="closeChange"></shareRedPackets> -->
+			<product-window :attr='attribute' :limitNum='1' @myevent="onMyEvent" @ChangeAttr="ChangeAttr"
+				@ChangeCartNum="ChangeCartNum" @attrVal="attrVal" @iptCartNum="iptCartNum" @getImg="showImg"></product-window>
+			<!-- 分享按钮 -->
+			<view class="generate-posters" :class="posters ? 'on' : ''">
+				<view class="generateCon acea-row row-middle">
+					<!-- #ifndef MP -->
+					<button class="item" hover-class="none" v-if="weixinStatus === true" @click="H5ShareBox = true">
+						<view class="pictrue">
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/weixin.png'"></image>
+						</view>
+						<view class="">分享给好友</view>
+					</button>
+					<!-- #endif -->
+					<!-- #ifdef MP -->
+					<button class="item" open-type="share" hover-class="none">
+						<view class="pictrue">
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/weixin.png'"></image>
+						</view>
+						<view class="">分享给好友</view>
+					</button>
+					<!-- #endif -->
+					<!-- #ifdef APP-PLUS -->
+					<view class="item" @click="appShare('WXSceneSession')">
+						<view class="iconfont icon-weixin3"></view>
+						<view class="">微信好友</view>
+					</view>
+					<view class="item" @click="appShare('WXSenceTimeline')">
+						<view class="iconfont icon-pengyouquan"></view>
+						<view class="">微信朋友圈</view>
+					</view>
+					<!-- #endif -->
+					<!-- #ifdef H5 || MP -->
+					<view class="item" @click="getpreviewImage">
+						<view class="pictrue">
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/changan.png'"></image>
+						</view>
+						<view class="">预览发图</view>
+					</view>
+					<!-- #endif -->
+					<!-- #ifdef MP  -->
+					<button class="item" hover-class="none" @click="savePosterPath">
+						<view class="pictrue">
+							<image :src="urlDomain+'/crmebimage/perset/staticImg/haibao.png'"></image>
+						</view>
+						<view class="">保存海报</view>
+					</button>
+					<!-- #endif -->
+				</view>
+				<view class="generateClose acea-row row-center-wrapper" @click="posterImageClose">取消</view>
+			</view>
+			<cus-previewImg ref="cusPreviewImg" :list="skuArr" @changeSwitch="changeSwitch" />
+			<view class="mask" v-if="posters" @click="closePosters"></view>
+			<view class="mask" v-if="canvasStatus" @click="listenerActionClose"></view>
+			<view class="mask_transparent" v-if="currentPage" @touchmove="hideNav" @click="hideNav()"></view>
+			<!-- 海报展示 -->
+			<view class='poster-pop' v-if="canvasStatus">
+				<image :src='posterImage'></image>
+			</view>
+			<view class="canvas" v-else>
+				<canvas style="width:750px;height:1190px;" canvas-id="firstCanvas"></canvas>
+				<canvas canvas-id="qrcode" :style="{width: `${qrcodeSize}px`, height: `${qrcodeSize}px`}" />
+			</view>
+			<!-- 发送给朋友图片 -->
+			<view class="share-box" v-if="H5ShareBox">
+				<image :src="urlDomain+'/crmebimage/perset/staticImg/share-info.png'" @click="H5ShareBox = false"></image>
+			</view>
+			<!-- 保障服务弹窗 -->
+			<view class="guarantee-pop-box">
+				<uni-popup ref="guaranteePopup" :safe-area="false" type="bottom" borderRadius="20px 20px 0 0">
+					<view class="ensure">
+						<view class="title">
+							保障服务
+							<view class="close-box" @click="handleToGgle(false)">
+								<view class="iconfont icon-guanbi f-s-24"></view>
+							</view>
+						</view>
+						<view class="list">
+							<view class="item acea-row" v-for="(item, index) in guaranteeList" :key="index">
+								<view class="pictrue">
+									<text class="iconfont icon-gou1"></text>
+								</view>
+								<view class="text">
+									<view class="name">{{ item.name }}</view>
+									<view>{{ item.content }}</view>
+								</view>
+							</view>
+						</view>
+						<view class="activityBtn bnt" @click="handleToGgle(false)">
+							确定
+						</view>
+					</view>
+				</uni-popup>
+			</view>
+		</view>
+
+	</view>
+</template>
+
+<script setup>
+import { ref, reactive, watch, nextTick, getCurrentInstance } from "vue";
+import { onLoad, onShareAppMessage } from "@dcloudio/uni-app";
+const app = getApp();
+import uQRCode from "@/js_sdk/Sansnn-uQRCode/uqrcode.js";
+import { HTTP_H5_URL } from "@/config/app.js";
+import { getSeckillDetail, seckillCode } from "@/api/activity.js";
+import { collectAdd, collectDel, getReplyList, getReplyConfig } from "@/api/store.js";
+import productConSwiper from "@/components/productConSwiper/index.vue";
+import productWindow from "@/components/productWindow/index.vue";
+import userEvaluation from "@/components/userEvaluation/index.vue";
+import cusPreviewImg from "@/components/cus-previewImg/cus-previewImg.vue";
+// #ifdef MP
+import { base64src } from "@/utils/base64src.js";
+import { getQrcode } from "@/api/api.js";
+// #endif
+import mpHtml from "@/uni_modules/mp-html/components/mp-html/mp-html.vue";
+import countDown from "@/pages/activity/components/countDown/index.vue";
+import shareRedPackets from "@/components/shareRedPackets/index.vue";
+import { imageBase64 } from "@/api/public.js";
+import { toLogin } from "@/libs/login.js";
+import { silenceBindingSpread } from "@/utils";
+import { spread } from "@/api/user.js";
+import util from "@/utils/util.js";
+import Cache from "@/utils/cache.js";
+import * as Order from "@/libs/order.js";
+import { useAppStore } from "@/store/app.js";
+import { storeToRefs } from "pinia";
+import { useColor } from '@/composables/useColor.js';
+
+const { proxy } = getCurrentInstance();
+const appStore = useAppStore();
+const { isLogin, uid, chatUrl } = storeToRefs(appStore);
+
+// 子组件引用
+const guaranteePopup = ref(null);
+const cusPreviewImgRef = ref(null);
+
+// data
+const urlDomain = ref(Cache.get("imgHost"));
+const showSkeleton = ref(true);
+const isNodes = ref(0);
+const bgColor = ref({ bgColor: '#333333', Color: '#fff', isDay: true, width: '44rpx', timeTxtwidth: '16rpx' });
+const dataShow = ref(0);
+const id = ref(0);
+const time = ref(0);
+const countDownHour = ref("00");
+const countDownMinute = ref("00");
+const countDownSecond = ref("00");
+const storeInfo = ref({});
+const imgUrls = ref([]);
+const parameter = ref({ navbar: '1', return: '1', title: '抢购详情页', color: false });
+const attribute = reactive({ cartAttr: false, productAttr: [], productSelect: {} });
+const productValue = ref([]);
+const isOpen = ref(false);
+const attr = ref("请选择");
+const attrValue = ref("");
+const status = ref(1);
+const isAuto = ref(false);
+const isShowAuth = ref(false);
+const iShidden = ref(false);
+const limitNum = ref(1);
+const personNum = ref(0);
+const iSplus = ref(false);
+const replyCount = ref(0);
+const reply = ref([]);
+const replyChance = ref(0);
+const navH = ref("");
+const navList = ref(['商品', '评价', '详情']);
+const opacity = ref(0);
+const scrollY = ref(0);
+const topArr = ref([]);
+const toView = ref("");
+const height = ref(0);
+const heightArr = ref([]);
+const lock = ref(false);
+const scrollTop = ref(0);
+const tagStyle = ref({ img: 'width:100%;display:block;', table: 'width:100%', video: 'width:100%' });
+const datatime = ref(0);
+const navActive = ref(0);
+const meunHeight = ref(0);
+const backH = ref("");
+const posters = ref(false);
+const weixinStatus = ref(false);
+const posterImageStatus = ref(false);
+const canvasStatus = ref(false);
+const storeImage = ref("");
+const PromotionCode = ref("");
+const posterImage = ref("");
+const posterbackgd = ref(`${Cache.get("imgHost")}/crmebimage/perset/staticImg/posterbackgd.png`);
+const actionSheetHidden = ref(false);
+const cart_num = ref("");
+const attrTxt = ref("");
+const qrcodeSize = ref(600);
+const imagePath = ref("");
+const imgTop = ref("");
+const H5ShareBox = ref(false);
+const sharePacket = ref({ isState: true });
+const buyNum = ref(1);
+const errT = ref("");
+const returnShow = ref(true);
+const homeTop = ref(20);
+const navbarRight = ref(0);
+const userCollect = ref(false);
+const theme = ref(app.globalData.theme);
+const { colorStyle } = useColor();
+const skuArr = ref([]);
+const currentPage = ref(false);
+const selectSku = ref({});
+const selectNavList = ref([
+	{ name: '首页', icon: 'icon-shouye8', url: '/pages/index/index', after: 'dialog_after' },
+	{ name: '搜索', icon: 'icon-sousuo6', url: '/pages/goods/goods_search/index', after: 'dialog_after' },
+	{ name: '购物车', icon: 'icon-gouwuche7', url: '/pages/order_addcart/order_addcart', after: 'dialog_after' },
+	{ name: '我的收藏', icon: 'icon-shoucang3', url: '/pages/users/user_goods_collection/index', after: 'dialog_after' },
+	{ name: '个人中心', icon: 'icon-gerenzhongxin1', url: '/pages/user/index' },
+]);
+const chatConfig = ref({ consumer_hotline: '', telephone_service_switch: 'close', wx_chat_independent: 'open' });
+const masterStatus = ref("");
+const openPages = ref("");
+const videoLink = ref("");
+const guaranteeList = ref([]);
+const skuImage = ref([]);
+
+watch(isLogin, (newV) => { if (newV) getSeckillDetailFn(); }, { deep: true });
+
+onLoad((options) => {
+	setTimeout(() => { isNodes.value++; }, 500);
+	appStore.PRODUCT_TYPE('normal');
+	let statusBarHeight = '';
+	var pages = getCurrentPages();
+	chatConfig.value = Cache.getItem('chatConfig');
+	uni.getSystemInfo({
+		success: function(res) { height.value = res.windowHeight; statusBarHeight = res.statusBarHeight; },
+	});
+	// #ifndef APP-PLUS
+	navH.value = app.globalData.navHeight;
+	// #endif
+	// #ifdef APP-PLUS
+	navH.value = 90;
+	// #endif
+	// #ifdef MP
+	let menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+	meunHeight.value = menuButtonInfo.height;
+	backH.value = (navH.value / 2) + (meunHeight.value / 2);
+	theme.value = Cache.get('theme');
+	// #endif
+	if (!options.scene && !options.id) {
+		showSkeleton.value = false;
+		util.Tips({ title: '缺少参数无法查看商品' }, { url: '/pages/index/index' });
+		return;
+	}
+	if (options.id) id.value = options.id;
+	if (options.scene) {
+		let qrCodeValue = util.getUrlParams(decodeURIComponent(options.scene));
+		let mapeMpQrCodeValue = util.formatMpQrCodeData(qrCodeValue);
+		id.value = mapeMpQrCodeValue.id ? mapeMpQrCodeValue.id : '';
+		app.globalData.spread = mapeMpQrCodeValue.spread;
+	}
+	if (options.spread) app.globalData.spread = options.spread;
+	getSeckillDetailFn();
+	nextTick(() => {
+		// #ifdef MP
+		const menuButton = uni.getMenuButtonBoundingClientRect();
+		const query = uni.createSelectorQuery().in(proxy);
+		query.select('#home').boundingClientRect(data => {
+			homeTop.value = menuButton.top * 2 + menuButton.height - data.height;
+		}).exec();
+		// #endif
+	});
+	if (isLogin.value && parseInt(app.globalData.spread) > 0) silenceBindingSpread();
+});
+
+//#ifdef MP
+onShareAppMessage(() => ({
+	title: storeInfo.value.title,
+	path: app.globalData.openPages,
+	imageUrl: storeInfo.value.image
+}));
+//#endif
+
+// methods
+function wxChatService() {
+	let chatUrlArr = chatUrl.value.split('?');
+	uni.navigateTo({ url: `/pages/users/web_page/index?webUel=${chatUrlArr[0]}&title=客服&${chatUrlArr[1]}` });
+}
+function handleToGgle(type) { if (type) guaranteePopup.value.open(); else guaranteePopup.value.close(); }
+// #ifdef APP-PLUS
+function appShare(scene) {
+	let routes = getCurrentPages();
+	let curRoute = routes[routes.length - 1].$page.fullPath;
+	uni.share({
+		provider: "weixin", scene, type: 0,
+		href: `${HTTP_H5_URL}${curRoute}&spread=${uid.value}`,
+		title: storeInfo.value.storeName, summary: app.globalData.companyName,
+		imageUrl: storeInfo.value.image,
+		success: function() { posters.value = false; },
+		fail: function() { uni.showToast({ title: '分享失败', icon: 'none', duration: 2000 }); posters.value = false; }
+	});
+}
+// #endif
+function onClickService() {
+	if (chatConfig.value.telephone_service_switch === 'open') {
+		uni.makePhoneCall({ phoneNumber: chatConfig.value.consumer_hotline });
+	} else {
+		// #ifdef APP-PLUS
+		uni.navigateTo({ url: '/pages/users/web_page/index?webUel=' + chatUrl.value + '&title=客服' });
+		// #endif
+		// #ifndef APP-PLUS
+		location.href = chatUrl.value;
+		// #endif
+	}
+}
+function closePosters() { posters.value = false; }
+function getProductReplyList() {
+	getReplyList(storeInfo.value.productId, { page: 1, limit: 3, type: 0 }).then(res => {
+		reply.value = res.data.list ? [res.data.list[0]] : [];
+	});
+}
+function getProductReplyCount() {
+	getReplyConfig(storeInfo.value.productId).then(res => {
+		replyChance.value = res.data.replyChance * 100;
+		replyCount.value = res.data.sumCount;
+	});
+}
+function iptCartNum(e) {
+	attribute.productSelect.cart_num = e ? e : 1;
+	cart_num.value = e;
+	if (e > 1) return util.Tips({ title: `该商品每次限购1${storeInfo.value.unitName}` });
+}
+function returns() { uni.navigateBack(); }
+
+function getSeckillDetailFn() {
+	getSeckillDetail(id.value).then(res => {
+		dataShow.value = 1;
+		guaranteeList.value = res.data.guaranteeList || [];
+		masterStatus.value = res.data.masterStatus;
+		storeInfo.value = res.data.storeSeckill;
+		userCollect.value = res.data.userCollect;
+		status.value = storeInfo.value.seckillStatus;
+		datatime.value = Number(storeInfo.value.timeSwap);
+		let sliderImage = JSON.parse(res.data.storeSeckill.sliderImage);
+		if (getFileType(sliderImage[0]) == 'video') {
+			videoLink.value = sliderImage[0];
+			sliderImage.splice(0, 1);
+		}
+		imgUrls.value = sliderImage || [];
+		attribute.productAttr = res.data.productAttr;
+		productValue.value = res.data.productValue;
+		personNum.value = res.data.storeSeckill.quota;
+		attribute.productSelect.num = res.data.storeSeckill.num;
+		for (let key in res.data.productValue) skuArr.value.push(res.data.productValue[key]);
+		selectSku.value = skuArr.value[0];
+		getProductReplyList();
+		getProductReplyCount();
+		let pa = res.data.productAttr.map(item => ({
+			attrName: item.attrName, attrValues: item.attrValues.split(','), id: item.id,
+			isDel: item.isDel, productId: item.productId, type: item.type,
+			optionList: item.optionList || [], isShowImage: item.isShowImage
+		}));
+		attribute.productAttr = pa;
+		getSkuImage();
+		// #ifdef H5
+		storeImage.value = storeInfo.value.image;
+		make();
+		setShare();
+		getImageBase64Fn(storeInfo.value.image);
+		// #endif
+		// #ifdef MP
+		getQrcodeFn();
+		imgTop.value = res.data.storeSeckill.image;
+		// #endif
+		// #ifndef H5
+		downloadFilestoreImage();
+		// #endif
+		DefaultSelect();
+		setTimeout(function() { infoScroll(); }, 1000);
+		openPages.value = '/pages/activity/goods_seckill_details/index?id=' + id.value + '&spread=' + uid.value;
+		setTimeout(() => { showSkeleton.value = false; }, 1000);
+	}).catch(err => { util.Tips({ title: err }, { tab: 3 }); });
+}
+
+// #ifdef H5
+function setShare() {
+	proxy.$wechat.isWeixin() &&
+		proxy.$wechat.wechatEvevt(["updateAppMessageShareData", "updateTimelineShareData", "onMenuShareAppMessage", "onMenuShareTimeline"], {
+			desc: app.globalData.companyName, title: storeInfo.value.storeName,
+			link: location.href, imgUrl: storeInfo.value.image
+		}).then(() => {}).catch(() => {});
+}
+// #endif
+
+function DefaultSelect() {
+	let productAttr = attribute.productAttr;
+	let value = [];
+	const sortedArray = Object.entries(productValue.value)
+		.sort(([, a], [, b]) => a.id - b.id)
+		.map(([key, val]) => ({ key, ...val }));
+	for (let i = 0; i < sortedArray.length; i++) {
+		const attrItem = sortedArray[i];
+		if (attrItem.quota > 0) { if (value.length == 0) { value = productAttr.length ? attrItem.key.split(",") : []; break; } }
+	}
+	for (let i = 0; i < value.length; i++) productAttr[i].index = value[i];
+	let productSelect = productValue.value[value.join(",")];
+	if (productSelect && productAttr.length) {
+		attribute.productSelect.storeName = storeInfo.value.storeName;
+		attribute.productSelect.image = productSelect.image;
+		attribute.productSelect.price = productSelect.price;
+		attribute.productSelect.otPrice = productSelect.otPrice;
+		attribute.productSelect.stock = productSelect.stock;
+		attribute.productSelect.unique = productSelect.id;
+		attribute.productSelect.quota = productSelect.quota;
+		attribute.productSelect.quotaShow = productSelect.quotaShow;
+		attribute.productSelect.cart_num = 1;
+		attrValue.value = value.join(",");
+		attrTxt.value = "已选择";
+	} else if (!productSelect && productAttr.length) {
+		attribute.productSelect.storeName = storeInfo.value.storeName;
+		attribute.productSelect.image = storeInfo.value.image;
+		attribute.productSelect.price = storeInfo.value.price;
+		attribute.productSelect.quota = 0;
+		attribute.productSelect.stock = 0;
+		attribute.productSelect.unique = "";
+		attribute.productSelect.cart_num = 0;
+		attrValue.value = "";
+		attrTxt.value = "请选择";
+	} else if (!productSelect && !productAttr.length) {
+		attribute.productSelect.storeName = storeInfo.value.storeName;
+		attribute.productSelect.image = storeInfo.value.image;
+		attribute.productSelect.price = storeInfo.value.price;
+		attribute.productSelect.quota = storeInfo.value.quota;
+		attribute.productSelect.quotaShow = storeInfo.value.quotaShow;
+		attribute.productSelect.stock = storeInfo.value.stock;
+		attribute.productSelect.unique = "";
+		attribute.productSelect.cart_num = 1;
+		attrValue.value = "";
+		attrTxt.value = "请选择";
+	}
+}
+
+function seleAttr() { attribute.cartAttr = true; }
+function showNav() { currentPage.value = !currentPage.value; }
+function onMyEvent() { attribute.cartAttr = false; isOpen.value = false; }
+/** 打开属性（SKU）弹窗 */
+function selecAttr() { attribute.cartAttr = true; isOpen.value = true; }
+
+function ChangeCartNum(changeValue) {
+	let productSelect = productValue.value[attrValue.value];
+	if (cart_num.value) { productSelect.cart_num = cart_num.value; attribute.productSelect.cart_num = cart_num.value; }
+	if (productSelect === undefined && !attribute.productAttr.length) productSelect = attribute.productSelect;
+	if (productSelect === undefined) return;
+	let stock = productSelect.stock || 0;
+	let quota = productSelect.quota || 0;
+	let num = attribute.productSelect;
+	let nums = storeInfo.value.num || 0;
+	if (productSelect.cart_num == undefined) productSelect.cart_num = 1;
+	if (changeValue) {
+		if (num.cart_num === 1) return util.Tips({ title: `该商品每次限购1${storeInfo.value.unitName}` });
+		num.cart_num++;
+		let arrMin = [nums, quota, stock];
+		let minN = Math.min.apply(null, arrMin);
+		if (num.cart_num >= minN) { attribute.productSelect.cart_num = minN ? minN : 1; cart_num.value = minN ? minN : 1; }
+		cart_num.value = num.cart_num;
+		attribute.productSelect.cart_num = num.cart_num;
+	} else {
+		num.cart_num--;
+		if (num.cart_num < 1) { attribute.productSelect.cart_num = 1; cart_num.value = 1; }
+		cart_num.value = num.cart_num;
+		attribute.productSelect.cart_num = num.cart_num;
+	}
+}
+
+function attrVal(val) {
+	attribute.productAttr[val.indexw].index = attribute.productAttr[val.indexw].attrValues[val.indexn];
+}
+
+function ChangeAttr(res) {
+	cart_num.value = 1;
+	let productSelect = productValue.value[res];
+	selectSku.value = productSelect;
+	if (productSelect) {
+		attribute.productSelect.image = productSelect.image;
+		attribute.productSelect.price = productSelect.price;
+		attribute.productSelect.otPrice = productSelect.otPrice;
+		attribute.productSelect.stock = productSelect.stock;
+		attribute.productSelect.unique = productSelect.id;
+		attribute.productSelect.cart_num = 1;
+		attribute.productSelect.quota = productSelect.quota;
+		attribute.productSelect.quotaShow = productSelect.quotaShow;
+		attrValue.value = res;
+		attrTxt.value = "已选择";
+	} else {
+		attribute.productSelect.image = storeInfo.value.image;
+		attribute.productSelect.price = storeInfo.value.price;
+		attribute.productSelect.stock = 0;
+		attribute.productSelect.unique = "";
+		attribute.productSelect.cart_num = 0;
+		attribute.productSelect.quota = 0;
+		attribute.productSelect.quotaShow = 0;
+		attrValue.value = "";
+		attrTxt.value = "已选择";
+	}
+}
+
+function scroll(e) {
+	var sy = e.detail.scrollTop;
+	var o = sy / 500;
+	opacity.value = o > 1 ? 1 : o;
+	scrollY.value = sy;
+	if (lock.value) { lock.value = false; return; }
+	for (var i = 0; i < topArr.value.length; i++) {
+		if (sy < topArr.value[i] - (app.globalData.navHeight / 2) + heightArr.value[i]) { navActive.value = i; break; }
+	}
+	if (currentPage.value == true) currentPage.value = false;
+}
+
+function tap(item, index) {
+	toView.value = item.id;
+	navActive.value = index;
+	lock.value = true;
+	scrollTop.value = index > 0 ? topArr.value[index] - (app.globalData.navHeight / 2) : topArr.value[index];
+}
+
+function infoScroll() {
+	let tArr = [], hArr = [];
+	for (var i = 0; i < navList.value.length; i++) {
+		var query = wx.createSelectorQuery().in(proxy);
+		var idView = "#past" + i;
+		query.select(idView).boundingClientRect();
+		query.exec(function(res) {
+			tArr.push(res[0].top); hArr.push(res[0].height);
+			topArr.value = tArr; heightArr.value = hArr;
+		});
+	}
+}
+
+function setCollect() {
+	if (userCollect.value) collectDel(storeInfo.value.productId).then(() => { userCollect.value = !userCollect.value; });
+	else collectAdd(storeInfo.value.productId).then(() => { userCollect.value = !userCollect.value; });
+}
+
+function openAlone() { uni.navigateTo({ url: `/pages/goods/goods_details/index?id=${storeInfo.value.productId}` }); }
+
+function goCat() {
+	var productSelect = productValue.value[attrValue.value];
+	if (cart_num.value > 1) return util.Tips({ title: `该商品每人限购1${storeInfo.value.unitName}` });
+	if (isOpen.value) attribute.cartAttr = true;
+	else attribute.cartAttr = !attribute.cartAttr;
+	if (attribute.cartAttr === true && !isOpen.value) { isOpen.value = true; return; }
+	if (attribute.productAttr.length && productSelect === undefined && isOpen.value === true) {
+		return util.Tips({ title: '请选择属性' });
+	}
+	Order.getPreOrder("buyNow", [{
+		"attrValueId": parseFloat(attribute.productSelect.unique),
+		"seckillId": parseFloat(id.value),
+		"productNum": parseFloat(cart_num.value ? cart_num.value : attribute.productSelect.cart_num),
+		"productId": parseFloat(storeInfo.value.productId)
+	}]);
+}
+
+function listenerActionSheet() {
+	// #ifdef H5
+	if (proxy.$wechat.isWeixin() === true) weixinStatus.value = true;
+	// #endif
+	// #ifndef APP-PLUS
+	goPoster();
+	// #endif
+	posters.value = true;
+}
+
+function listenerActionClose() { posters.value = false; }
+function posterImageClose() { canvasStatus.value = false; posters.value = false; }
+function setDomain(url) { url = url ? url.toString() : ''; if (url.indexOf("https://") > -1) return url; else return url.replace('http://', 'https://'); }
+
+function downloadFilestoreImage() {
+	uni.downloadFile({
+		url: setDomain(storeInfo.value.image),
+		success: function(res) { storeImage.value = res.tempFilePath; },
+		fail: function() { util.Tips({ title: '' }); storeImage.value = ''; },
+	});
+}
+
+function getImageBase64Fn(images) { imageBase64({ url: images }).then(res => { imgTop.value = res.data.code; }); }
+
+function getFileType(fileName) {
+	let suffix = '';
+	try { const flieArr = fileName.split('.'); suffix = flieArr[flieArr.length - 1]; } catch (err) { suffix = ''; }
+	if (!suffix) return false;
+	suffix = suffix.toLocaleLowerCase();
+	if (['png', 'jpg', 'jpeg', 'bmp', 'gif'].find(item => item === suffix)) return 'image';
+	if (['mp4', 'm2v', 'mkv', 'rmvb', 'wmv', 'avi', 'flv', 'mov', 'm4v'].find(item => item === suffix)) return 'video';
+	return 'other';
+}
+
+function goFriend() { posters.value = false; }
+
+function goPoster() {
+	uni.showLoading({ title: '海报生成中', mask: true });
+	posters.value = false;
+	if (!PromotionCode.value) { uni.hideLoading(); util.Tips({ title: errT.value }); return; }
+	setTimeout(() => { if (!imgTop.value) { uni.hideLoading(); util.Tips({ title: '无法生成商品海报！' }); return; } }, 2000);
+	uni.downloadFile({
+		url: imgTop.value,
+		success: (res) => {
+			let arrImagesUrlTop = res.tempFilePath;
+			let arrImages = [posterbackgd.value, arrImagesUrlTop, PromotionCode.value];
+			let sn = storeInfo.value.storeName;
+			let pr = storeInfo.value.price;
+			setTimeout(() => {
+				util.PosterCanvas(arrImages, sn, pr, storeInfo.value.otPrice, function(tempFilePath) {
+					posterImage.value = tempFilePath; canvasStatus.value = true; uni.hideLoading();
+				});
+			}, 500);
+		}
+	});
+}
+
+function getQrcodeFn() {
+	let data = { pid: uid.value, id: id.value, path: 'pages/activity/goods_seckill_details/index' };
+	getQrcode(data).then(res => { base64src(res.data.code, Date.now(), r => { PromotionCode.value = r; }); }).catch(err => { errT.value = err; });
+}
+
+function make() {
+	let href = location.href.split('?')[0] + "?id=" + id.value + "&spread=" + uid.value;
+	uQRCode.make({
+		canvasId: 'qrcode', text: href, size: qrcodeSize.value, margin: 10,
+		success: res => { PromotionCode.value = res; },
+		complete: () => {},
+		fail: () => { util.Tips({ title: '海报二维码生成失败！' }); }
+	});
+}
+
+function getpreviewImage() {
+	if (posterImage.value) uni.previewImage({ urls: [posterImage.value], current: posterImage.value });
+	else util.Tips({ title: '您的海报尚未生成' });
+}
+
+// #ifdef MP
+function savePosterPath() {
+	uni.getSetting({
+		success(res) {
+			if (!res.authSetting['scope.writePhotosAlbum']) {
+				uni.authorize({
+					scope: 'scope.writePhotosAlbum',
+					success() {
+						uni.saveImageToPhotosAlbum({
+							filePath: posterImage.value,
+							success: function() { posterImageClose(); util.Tips({ title: '保存成功', icon: 'success' }); },
+							fail: function() { util.Tips({ title: '保存失败' }); }
+						});
+					}
+				});
+			} else {
+				uni.saveImageToPhotosAlbum({
+					filePath: posterImage.value,
+					success: function() { posterImageClose(); util.Tips({ title: '保存成功', icon: 'success' }); },
+					fail: function() { util.Tips({ title: '保存失败' }); },
+				});
+			}
+		}
+	});
+}
+// #endif
+
+// #ifdef H5
+function setShareInfoStatus() {
+	let data = storeInfo.value;
+	let href = location.href;
+	if (proxy.$wechat.isWeixin()) {
+		href = href.indexOf("?") === -1 ? href + "?spread=" + uid.value : href + "&spread=" + uid.value;
+		proxy.$wechat.wechatEvevt(["updateAppMessageShareData", "updateTimelineShareData"], {
+			desc: app.globalData.companyName, title: data.storeName, link: href, imgUrl: data.image
+		});
+	}
+}
+// #endif
+
+function hideNav() { currentPage.value = false; }
+function linkPage(url) {
+	if (['/pages/index/index', '/pages/order_addcart/order_addcart', '/pages/user/index'].indexOf(url) > -1) uni.switchTab({ url });
+	else uni.navigateTo({ url });
+	currentPage.value = false;
+}
+function showImg(index) { cusPreviewImgRef.value.open(selectSku.value.suk); }
+
+function changeSwitch(e) {
+	let productSelect = skuArr.value[e];
+	selectSku.value = productSelect;
+	var skuList = productSelect.suk.split(',');
+	skuList.forEach((i, index) => { attribute.productAttr[index].index = skuList[index]; });
+	if (productSelect) {
+		attribute.productSelect.image = productSelect.image;
+		attribute.productSelect.price = productSelect.price;
+		attribute.productSelect.otPrice = productSelect.otPrice;
+		attribute.productSelect.stock = productSelect.stock;
+		attribute.productSelect.unique = productSelect.id;
+		attribute.productSelect.quota = productSelect.quota;
+		attribute.productSelect.quotaShow = productSelect.quotaShow;
+		attribute.productSelect.cart_num = 1;
+		attrTxt.value = "已选择";
+		attrValue.value = productSelect.suk;
+	}
+}
+
+function getSkuImage() {
+	let sku = [];
+	let skuTable = [];
+	attribute.productAttr.map((item) => { item.optionList.map(items => { if (items.image) sku.push(items.image); }); });
+	const uniqueData = sku.filter((item, index, self) => index === self.findIndex((t) => t === item));
+	if (uniqueData.length > 0) { skuImage.value = uniqueData; }
+	else {
+		for (let key in productValue.value) { let obj = productValue.value[key]; skuTable.push(obj.image); }
+		skuImage.value = skuTable.filter((item, index, self) => index === self.findIndex((t) => t === item));
+	}
+}
+</script>
+
+<style scoped lang="scss">
+	.pl-06 {
+		padding-left: 6rpx;
+	}
+
+	.pr-14 {
+		padding-right: 14rpx;
+	}
+
+	.select_nav {
+		width: 170rpx !important;
+		height: 60rpx !important;
+		border-radius: 33rpx;
+		background: rgba(255, 255, 255, 0.3);
+		border: 1px solid rgba(0, 0, 0, 0.07);
+		color: #000;
+		position: fixed;
+		font-size: 18px;
+		line-height: 58rpx;
+		z-index: 1000;
+		left: 14rpx;
+	}
+
+	.px-20 {
+		padding: 0 20rpx 0;
+	}
+
+	.nav_line {
+		content: '';
+		display: inline-block;
+		width: 1px;
+		height: 34rpx;
+		background: rgba(0, 0, 0, 0.2);
+		position: absolute;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+
+	.bgwhite {
+		background: #fff;
+	}
+
+	.input {
+		display: flex;
+		align-items: center;
+		/* #ifdef MP */
+		width: 300rpx;
+		/* #endif */
+		/* #ifndef MP */
+		width: 460rpx;
+		/* #endif */
+		height: 58rpx;
+		padding: 0 0 0 30rpx;
+		border: 1px solid #E0E0E0;
+		border-radius: 29rpx;
+		color: #BBBBBB;
+		font-size: 26rpx;
+		position: fixed;
+		left: 0;
+		right: 0;
+		margin: auto;
+		background: #fff;
+
+		.iconfont {
+			margin-right: 20rpx;
+			font-size: 26rpx;
+			color: #666666;
+		}
+	}
+
+	.container_detail {
+		/* #ifdef MP */
+		margin-top: 32rpx;
+		/* #endif */
+	}
+
+	.tab_nav {
+		width: 100%;
+		height: 48px;
+		padding: 0 30rpx 0;
+	}
+
+	.h5_back {
+		color: #000;
+		position: fixed;
+		left: 20rpx;
+		font-size: 32rpx;
+		text-align: center;
+		width: 58rpx;
+		height: 58rpx;
+		background: rgba(255, 255, 255, 0.3);
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 50%;
+	}
+
+	.right_select {
+		width: 58rpx;
+		height: 58rpx;
+		background: rgba(255, 255, 255, 0.3);
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 50%;
+		position: fixed;
+		right: 20rpx;
+		text-align: center;
+		line-height: 58rpx;
+	}
+
+	.dialog_nav {
+		position: absolute;
+		/* #ifdef MP */
+		left: 14rpx;
+		/* #endif */
+		/* #ifdef H5 || APP-PLUS*/
+		right: 14rpx;
+		/* #endif */
+		width: 240rpx;
+		background: #FFFFFF;
+		box-shadow: 0px 0px 16rpx rgba(0, 0, 0, 0.08);
+		z-index: 310;
+		border-radius: 14rpx;
+
+		&::before {
+			content: '';
+			width: 0;
+			height: 0;
+			position: absolute;
+			/* #ifdef MP */
+			left: 0;
+			right: 0;
+			margin: auto;
+			/* #endif */
+			/* #ifdef H5 || APP-PLUS */
+			right: 8px;
+			/* #endif */
+			top: -9px;
+			border-bottom: 10px solid #F5F5F5;
+			border-left: 10px solid transparent;
+			/*transparent 表示透明*/
+			border-right: 10px solid transparent;
+		}
+	}
+
+	.dialog_nav_item {
+		width: 100%;
+		height: 84rpx;
+		line-height: 84rpx;
+		padding: 0 20rpx 0;
+		box-sizing: border-box;
+		border-bottom: #eee;
+		font-size: 28rpx;
+		color: #333;
+		position: relative;
+
+		.iconfont {
+			font-size: 32rpx;
+		}
+	}
+
+	.dialog_after {
+		::after {
+			content: '';
+			position: absolute;
+			width: 86px;
+			height: 1px;
+			background-color: #EEEEEE;
+			bottom: 0;
+			right: 0;
+		}
+	}
+
+	.justify-center {
+		justify-content: center;
+	}
+
+	.align-center {
+		align-items: center;
+	}
+
+	.pl-20 {
+		padding-left: 20rpx;
+	}
+
+	.userEvaluation {
+		i {
+			display: inline-block;
+		}
+	}
+
+	.product-con {
+		.line1 {
+			width: 600rpx;
+		}
+	}
+
+	.share-box {
+		z-index: 1000;
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+
+		image {
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.generate-posters {
+		width: 100%;
+		height: 318rpx;
+		background-color: #fff;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		z-index: 388;
+		transform: translate3d(0, 100%, 0);
+		transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+		border-top: 1rpx solid #eee;
+
+		.generateCon {
+			height: 220rpx;
+		}
+
+		.generateClose {
+			height: 98rpx;
+			font-size: 28rpx;
+			color: #333333;
+			border-top: 1px solid #eee;
+		}
+
+		.item {
+			.pictrue {
+				width: 96rpx;
+				height: 96rpx;
+				border-radius: 50%;
+				margin: 0 auto 6rpx auto;
+
+				image {
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+
+	.generate-posters.on {
+		transform: translate3d(0, 0, 0);
+	}
+
+	.generate-posters .item {
+		flex: 1;
+		text-align: center;
+		font-size: 30rpx;
+	}
+
+	.generate-posters .item .iconfont {
+		font-size: 80rpx;
+		color: #5eae72;
+	}
+
+	.generate-posters .item .iconfont.icon-haibao {
+		color: #5391f1;
+	}
+
+	.generate-posters .item .iconfont.icon-haowuquan1 {
+		color: #ff954d;
+	}
+
+	.navbar .header {
+		font-size: 30rpx;
+		color: #050505;
+		display: flex;
+		align-items: center;
+		/* #ifndef MP */
+		width: 460rpx;
+		/* #endif */
+		/* #ifdef MP */
+		width: 360rpx;
+		/* #endif */
+		height: 100rpx;
+		position: fixed;
+		left: 0;
+		right: 0;
+		margin: auto;
+	}
+
+	.icon-xiangzuo {
+		/* #ifdef H5 */
+		top: 20rpx !important;
+		/* #endif */
+	}
+
+	.navbar .header .item {
+		position: relative;
+		margin: 0 25rpx;
+	}
+
+	.navbar .header .item.on:before {
+		position: absolute;
+		width: 60rpx;
+		height: 5rpx;
+		background-repeat: no-repeat;
+		content: "";
+		background-image: linear-gradient(to right, #ff3366 0%, #ff6533 100%);
+		bottom: -10rpx;
+		left: 50%;
+		margin-left: -28rpx;
+	}
+
+	.navbar {
+		position: fixed;
+		// background-color: #fff;
+		top: 0;
+		left: 0;
+		z-index: 98;
+		width: 100%;
+	}
+
+	.navbar .navbarH {
+		position: relative;
+	}
+
+	.navbar .navbarH .navbarCon {
+		position: absolute;
+		bottom: 0;
+		height: 100rpx;
+		width: 100%;
+	}
+
+	.product-con .nav {
+		background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu4AAABuCAYAAAB4MpY7AAAgAElEQVR4Xu2dzY8cR5qff1Fd3/1FUpQ41HKwmgG1BxG2YUiXNQxYczEMYwDbB/FiwN697AIG1gcDPqv0FxjwnryAYRtYX6TTwsYCa8AQDdg+aS42JNgWscPZIcSRSHazu9ldn11hvJmR1dnFrKqIisyszKxfYXpY6s6MjHgyKvvJt998Q4EvEiCByhLoaV377Vc4qB3hoN6BGg2hZLDtNjAeDhTQNu+HCmhde99qhVjGIyi05KeyT7i//Cz4vnk/GQ1VvdnSGAKNJrR8fwiggfC9/FdDt7R8r9lCsF3wvVZLDwbme/KtwQDNdlsPZDsd7Qu0NHRfjtWBhrwBMDU/b8v3Lsz3uuH7ThNDPMXrBw/UqLInlwMjARIoBQGttVwrbwPoxjpsro2z76T532m2JR1c1l6VjlXk+dQA8LbMo+AXL18kQALVIhAI+xMc6EvsT2uDmgh6pw2MYrIeSPkQSiQ+eo+2bDkv6KHUB7I+jL0fXb2/Rs/I+3VxBxpGtIcYoikqLmIvEj8ABhig2WoH75vt8JfEoB9KvLwXcZd/A3k3v0RE2C+MsEfyPmhi0DzA2UdKjat1RjkaEiCBshPQWu8DuAkEQQ8f4fXZd5WIz/98W45VxOlVA3DL3PTdMPMmjJjxRQIkUA0Cn2u98+J/40B3+3t11VHtjpHyAZSIu7yCqPucoIcR+OVR91kE3jLqHgTVc4q6o4E+hb0ac5ijIIEqE9BaN42I1efGGRfkbZHlLMfp2naRpt2Bia6/BWBnvmMU9yKdKvaFBNYk0PtS19/5KfYbO9jdUeEN+XiAmLiHaTHzUfd4ukywT4LUh2kxxYi6myyZWdR9WsdF81ucffQRI+xrTh3uRgIkkDMBkzojUhalzrhKpsv2LtsKCZ/tffZ1PXbax8p5FrxxOAmtSSqMfJlE1eQuUdw3fap4fBLwIBAJ+2TU3+10OhgN+qqDDuR/44HJYc8q6h7lvS/JdTep7GFKjETfJf99GOa/r5vrPgW0CPvwAKc/U2rigY+7kgAJkMDGCGit90zqzHwfXKTUZVtXOZ7fvqrH2tQckL+6yA2cyLrMBSsnt9poUyPicUmABJIJ9LSuH3xzetCpH3QkZlMfQImsy2skaTExWb9Klyl31F0eRm3UcU5h56eCBEigKgS01vLQoTy4Gk+dYdqMX+Tf9YYjz+kk3i356iLr8q/kscdfK7185QZ5jobHIgESWE7g33ylG+cd7Df20a73oaI/tF4X92pF3UXYd3bw+ncPcKKUuuQcIQESIIEqETCpM/LQ6q5nqsqqiHpVI+a+48pjOsm5FVmXCHt0k5bk4Cu9fOUGeYyGxyABErAQ9jvYb5xftNEN0yLr/b5CNwytj2MpMsWKug/RaIZlIK9KQ15VmNGz0pBvVpiZ9qHHlzg7vYeThxR2fkRIgAQqTkBrLXI3qx5ihusipS7brpL8VT+v0rGymlnRg8gi7KY8xMro+kovX7lBVqNhuyRAAqsJ9L7WzYMD7KnL8GEVUXZJhZlF2isYdZ9oTJsKp8/+C04fPmSEffUs4RYkQAJVIWBSZ6QEoKTQzMtzlWS5KOlAaU8dqQIj508i61IdJnrZRtdXevnKDdIeEdsjARJYTSAS9tYEcseOkRH0UNwv1Gaj7rFFmKzquttF3XemmNY7OPnbh0FKzHQ1JW5BAiRAAtUjYFJnJPIeX7BpXuJ9/5s3AelOncNYvfU3SjguePDUVuav9ZTinu6JY2sk4EXgX3+rW5M2dmtjNEb9c4XubpD0OOpfyXoWUfdrizDNVlZNruseLw0pg5USktdWWV2wmuobFWbMokoTPZh22+1X//UQJz0Ku9f84c4kQALVIaC1lst9PHXGRbZdtt3mmwCfCSO5qvJgsUTXo7+QSHu2Qr7IwZe6OcXd55RxXxJIicAffatbP2ljt//qvLG7K6oevkYKKvqv61H3eLrMOrnu4YVl/bru/lF3NcXleHjy6qt/d3jS6zHCntJUYjMkQAIVIqC1lgcZo9SZoqSXZHlTkGXbSTcorrMlKuEowi7inoWkU9xdzwq3J4G8CEiE/WiE3d3WVSmwUS0u6+WMugcJ+S1gMhqqerMV1G6XGu5B/fYpJs0Wjj++EaTEzF+k80LP45AACZBAKQiY1BlJxYinzqQpuGm2tSp6X6Rj2Z5/EWmp+hPlrcfFmuJuS5HbkUCZCfS+1O3WT9HRo1DYG+q1CtdfkLSYc1XFqLu+GE7G09bRP3yPwl7mucu+kwAJbIaA1loivFHqjIsAu2y7SrxX/bxMx1p1IuWXssi6/MVD6q3nJemMuK86M/w5CeRFQIQd75x29+oHNewDo/OrC0FDXb23jrrXrvZxreserawq6TLBDcMQKs1c9yjqrqeYjC9w9I9+ghOAEfa85hqPQwIkUD0CWuuoasmiBZtWibXvz8sk5qv6mjRB5FeXyLp8BcUhYi9bcZddbLe13W7WDea4V+9zzREVkIAI++AtdA5uoRbJutzKi6BH3S1V1L0VZMJgPFqc6z6Z6PHefvvl339LnRbwlLBLJEACJFBaAlrreOrMKkF1+bnLtmW+CYif++hmSCLr0WNltkLt8oCpbZuLxD/oM8W9tB9bdrwMBHq/1O3BGTqqcVbblxB7IOtnCtgPE2M8o+71WGlIaW5p1L0TLdY0ULIWRLsjCzeF79OMund2MJo0cPQP3lZnZThH7CMJkAAJlJGA1lr+XioCP+9yy+R7W8R81TiFmbCT3HX5V1Jh4i9fyc5if4p7GT+o7HMJCGitek+CgHQbF+ZicAA0X5uLa0zW84y678jCTaG7YzyAEnGP3gdv25IuY6S+LWUer94H282n0sxF3bEDydg/eviOel2Cs8QukgAJkEDpCZjUGcl7T1qwSca3SmB9fu6zr2vf0jqWPOArkXX5iqcbzc+FLCLpvm1S3Ev/ieUAikUgEvZXaA92oA4PgWEk6wfh+zDmvm7UPSwBOV/X3T7qDmWC7rNIu1vUPbzxkDz4cWzhpcEEo/ELHP2Tv6HOi3VC2BsSIAES2A4CWmv59TK/YJOrHM9vn5YsRydhU38JkJuaSNbNU11W88I2am67nRzUdtuFGTFMlbE6d9yIBJYQMMLen6LVqUENzk5U8Je3Q6D9+lTNVj0uedQ9kvXoAdbLEYbHOzj+w3fVBecHCZAACZDAZgloreUvvfOpM5uS5U3fBEjeurAQYQ9LtoUvF+/1lWyf/Snum/048eiVJBAJ+8vjFm7eROcUKijUBWBwFl4cbKPuo9pVOUjZb3GFmXSj7m3Jj3HKdYeqqYvBjuoeP/yx6lfyvHJQJEACJFBSAiZ1RoRVosxViZi73ATIXx4W5a2XSdwX9tXlzqOk05jdJoGUCRhhfzlBs3sCFVwiAAxPoQJvvyHiXtKo+6w0ZEKuexf983O8+v2fqEHKRNkcCZAACZBAigRM6ox5kmnWsI/I++w7L96r/tv1WPKXBvlNLF9Rrv8ymrbuaxsxXyTZWezv9CeDFKcUmyKBEhLQWv3eI7TeuYtGfwdKirz2T45VcK24KeL+St0Qa69Q1F3O0qSLfv8Ur/75+0oWPuWLBEiABEigBARM6oxEoKOKKVVKm5EHS+W3raTCuOStL5LspDPq+zApxb0EnxN2sYoEer3a7/2dT5u1xovG7du3gxGKuMu/obyXK+o+GvRVR/JjFlWYaQP9AVDr4OKvjnDSe6BGVTytHBMJkAAJVJ2A1lqkXVJn5iuouEa1XbZ32XZV9D3+86iEowi75K2vipxLP1zk2VbebdvMQvxXDrrqc5rjI4HFBHq69kf/GI3LUfintz0j64G4v4ISa69a1F3GNgAu8B1O/vAjNeb0IAESIAESKD8BrbWIbjx1xkeuffZ1EfVoWymmtixvPX6Cor6JNG9a3KVfPpKfKP6r7lbKP1s5AhJwJWCEvXWB+kX96kO3d/xCwUTc7aPuZv+UK8yM+ucK3d3ZEm8jFR5HaoGNpF67KQpW7/cVutHCS1eR9vmou+y7o3Hxy9/CSU+piSsybk8CJEACJFBsAlrrZrjsX5A6U/S0GemrRNblS97bvqok7oniT3G3nQrcrvoEjLC/uvi+fgd3ZuO9Ju85R90lRDI0Ui4dGtWgovWYR33/CjPNNrTSuHj6GKe9n1HYqz/JOUISIIFtJmBSZ0Te4w9xZhlBd2k7SusRWU+qSb/s1M0fJ9rWJV0lqX3biHmiZDtE3K33p7hv8yeYYw8I9LSuvXyMxvAEUvcVeBfoP4eK1D2tqHtYGnKduu5XUX+JtO/uhupuH3W/isCPTX67CPv58cnF7b92ePpQqUtOBRIgARIgge0hoLWWXyRR6oyLXAuk+PY++0bAJUYlsi43FOt6aZ7ibi3ZFPft+UxxpDkQ6PV07etPUL8nwv5j4Pz7qwtGv/G9qkrUPUifMdH5poaejHH+7Kc46yk1zQEzD0ECJEACJFBAAlpribonyXKaYr5I7OWmQR6ala8waOb+WiTr8y25RM2TemG7v+12XuK/7p2NO17uQQJFIdDTtU8+QX23G5bIuvnMCHtc3t8FDp5fiXxWUfdh7UztB9fN8PI5Og+PKeEHSYuJkF1bkGmNqHtzCj0c4/zoPl5T2IsyEdkPEiABEtgsAZM6I79yotQZ3wj6sv2lsk0k61J7fZ1X/IHTMoi7l6QnRewp7utMG+5TTgIi7B+g/qO/CXX2FArvhcM4fwZ1T96kFXW/Ga7IlGZd93Vz3SdT6J1G9/zoP+J1r8cIezknLntNAiRAAtkS0FrLH2eT6qG7iHzSthIgk+iUCHv0iJYMZlHFl1UDtZX1eDsukfCk47vsb7ut7XZviD/FfdUU4c/LT6Cna3/wc+z8+gfU7r8fDufs6RMFMXcj72lE3aU0pLwW13UPI+jzue5ZRN3VFNPGHs7/2ds4V0qtc6Er/3nnCEiABEiABKwJaK0lIj6fOrNu2oxI+kGsik0k65GIuoq7z++xSj2gSnG3ntLcsHQEer3aH/z85zvHnQ9n8/xHv4LCTN6zirrHF2RKbzXVpVF3U3lGXWKKc5z/y7+OC1DYSzdl2WESIAES2CQBkzoj0i2pMy7Rdum2lG0UWU9a8Cku7tEQbR3UR9qjG4UkrLbHdxF/20j62m3adnqT84jHJgE3Alqrjx9h53f2wwj3cecqV/z1r6CyiLr3Xx0pvHUrWJBJXnlH3WuXmB7t4rz3LvoAI+xuE4ZbkwAJkAAJxAloreXh0fnUmSSRlwdLI1lflLfuWvElKTrve4JshXrRcWz3t91u0Q3Fyv0p7r5TgfsXh4DW6pMvUHv+NlQk7YG4/+U3Cg8+mPWzHFH3+EOqr1X4uGr4//G67hJhr3Vx/i9+rPrFORHsCQmQAAmQQNkJmNQZib4HhRxiEXhxR/l1JMIuufGrXNJH3F0xuqyWuqrf8WOvFGqz8dqR9CX7X2vTpdOu8Lg9CeRDwAg7PgGePzIXkI+B3/nF1cVkcdTdbPOePKT6VN1D8Jjq9QdVLSvM5Bl1H7dx+fyvcPGv/haFPZ9JxqOQAAmQwPYR0FqLJ4q8S/67SLrkwEerry4DYpveMu+htvvFj73uaqkuDmwr7tIv221tt7vWpkunt2/GcsQFJ6AVNCTKHs7juLgDyCzqfge4eHn1wdxbuJqqb677m1H30QiX+OHJRe9nPxkU/OSweyRAAiRAAiUnYGq9S876OybKvkrWI6+0FfA0xT3q21pCvOJU+baZ2v4U95J/qLa2+xIF+Ayq9ynwdUzchUeho+6yNhyAwZlbhZnBEJfnHVz88ftquLXnnAMnARIgARLInIB5QDXKW49WV5XjSj77stQYW1mPj0E8dJ39pA2XFByXFJYkxi7720r6Wm1S3DP/CPAA6RIIouzhy4i7vI3L+0zcV0Xdm1dRc+e67p5R98HZiQofvI/KQ5q+HADD11BmSSaMBrhEExe9B2qULke2RgIkQAIkQAJXBLTWUd66/Bvltc9LtnijPLQqqTPRa13xlv3zEvfoWPOn3MWDfYR8LUmPdXa2v0uHOb9JoAAErou7dGg+6v780SMFfBz2NbdcdyjcDg+5LNe9cwoFi6j7tLk/OT7GxZ98pMYFgM4ukAAJkAAJVJCA1lokXKLr8iUR9ei1SlKl9KN85f2yvUlY1f9l41w0Jt82ffanuOc903i8tAjExF2adI66Q+HBVV9+VLSo+xkm39XRp7CnNV/YDgmQAAmQQJyAqRYTybrI97pCKaIv4p9nELgM4i6412W6aN/Z9/OEzU8OCaREIMeo+4/DLp9/bz6ESyvMrB91nzYx6T5Dv/czNUkJEpshARIgARIggYCAqQ4jKTCSoyl56vGXrWQmSWWUOhOP1i+i7rpaatSOraynNaZF/ffh5CLzS7eluPNDXUICxYm6X9SfK+DtgKE8cn/hWmHm4vnk0Q9vDx5R2Es4D9llEiABEig2AbOQkkTX5dEpcb6s5FNWWk1KnbEp1bhK9Iss7i5Cngp7inuxP3Ps3UICc1H3T4HeGw+pppTrnkXUvYPx1/8dwy8eqkueZBIgARIgARJIi4DWWgRaRF2EPf4QqYtkumwbuaQ80Cqrp8q/UXR9XrptvXMdWV8VcXcZk2/UPRVJn+tE0KYtwLTmE9shgZQIlC/qLgP/7gSTdz/EoKfUNCUQbIYESIAESGDLCWitJVUlqgoj8uwqqbaiuao6ivxcbhwWpc4s88756LzvWfUdU9Lxfdv02Z/i7jsjuP+mCZQk6i4hj9+6NT78txj2ehT2Tc8aHp8ESIAEqkAgtqqpRNeT6quvkuxVEWpbyUy6SZBIf1LqTFKbi6LzvqfJtv8uQWzbNl1unJzadOmsL0DuTwIpE0gv6v76V4/V/ffvz/pnV9cd6o7ZY1Gu+w8tjP/9f8AIFPaUzz2bIwESIIHtJGBKOIqsx+utb1LSF0mqpMyIvM/XhJ/v6zppMTa5805CbDmbfNv03p/ibnmmuFlBCcgKqtHrMygk5rrHUsJ86ro75LrvNDH+4/sYQal1LkgFhc1ukQAJkAAJbIKAKeEosi5f8iDo/CsLcU8rajyfOiN9jVeYcfk96ZI77yvJSac6C85ObVLcN/EJ5DFTJBBPl/lMAZ8GCzLJy2411au67r5RdznmXh3j3gcYU9hTPMVsigRIgAS2kIDWWiLVu0bWpV569HISPUvJz6LNuPhL6kx0wxGJ+zpndZHk+0q6iw/bHst2O6cbJJeOrgOY+5BA9gQ2HHWXAR4fY/LFA4wBRtizP+E8AgmQAAlUl4DWWvLVJQ1G/p1PM1km77aimLWkx09O/Fjx1Jl1ouzSrou4Owmxw4zaJGdFcXc4U9y0qAQ2GnUfc5XTos4L9osESIAEykFAay2VYETWJcIer8iyKcl2vUGwlWQZj0TebRZsivpgU20mK05JE8hW3G2ZuGzHcpDl+EizlysJ5BJ1h7oH4Cme4sHv3hv3FFc5XXleuAEJkAAJkEAigVgJRxF2kdms5NNWNG23cxHNRWMScU+qOhNn5Vptxrb/Lpw3Ke6JnBlx5wWlIgTmSkMC6ee6PwGeABOuclqRKcNhkAAJkEDOBEwJxygVRvLW5z3MRz5dhNT2OL6SvqxP8jOR96RtXFJpXP864MLJVtyz5HStDxT3nD+0PFyGBDKKuuNb4DevMeEqpxmeOzZNAiRAAhUmYEo4Rnnr4l4u8piXZOcmn3PjlwdXoxVeXaPs8VmTBadFs9L2WLbbWbOnuFf4QrF9Q/OMuneuLqRSYWbvt+/rL77GJR6qy+1jyRGTAAmQAAn4ENBaS/qL5KzLVySm64hmFpKfRZvW8plw4yIPriaVuXQ5BVmNyTbqnrqkJ93gUdxdpgS3LT4Bx6j72f4v1If4cDau4w7UzT70n/xnXHLRpOKfbvaQBEiABIpEIFbCUWQ9nsNtK3W22/lIcoTM9li22/n2SY6zLNd/1akuorinweTauCnuq6YBf14yAutH3f/fGfSj/4Yphb1kp5zdJQESIIENE9Bad0xkXf61FV3b7Xzlz3f/rIR40fjlwdVFVWfiCzflFQn3OY4v+zf2p7hv+MPOw2dAwDHqDjzCo48/vuSiSRmcCzZJAiRAAhUloLWWiLpE1ufrrdsKeRZCnEWbvvK5Tp8kdUbkfX7f+EOrPpxd+mQr7rlworhX9IKy3cOyi7rjC+CLh5hy0aTtni0cPQmQAAnYEjAlHCNZl7z1vOTR9ji+8ui7v4sQrxqT/DxJ3qPTtWr/Zdu5jHPR9PA5/tqcKO62n1ZuVy4CS6LuX3wCDaWm5RoQe0sCJEACJLAJArESjhJZl4WS4i8feXORx7VFz3TWtp9F7JPIe9IKsnmOKWnq2R4/1XNHcd/EVYDHzIHAm1F3fBoI+zq1YXPoLw9BAiRAAiRQJAKmhKPIuuStF1Fot6lPUerMOjdNaXDyEXff419zdYp7ka4S7Eu6BOJRdwp7umzZGgmQAAlUkIAp4RjJ+vwDkrYR1lRFLYbZ9vipRniX3LT4jnOd/eOpM1mMc1GfNinu1/pEca/ghYdDIgESIAESIAESsCNgSjiKrMtXVG99k5K8jtCuikT7tum7f5qSLdH3KHXG5zy59MlW3DPnRHG3+1xzKxIgARIgARIggYoQMHnrbSPrUh1m3odshTBzUVsj4u7bJ9/9XYR4Xc7LHlxdt80ItYsb2x7LdruV7F06V5GPK4dBAiRAAiRAAiSwjQRMCUfJWY/XW09NqijZMwK2TG23SxJa2TcefV8l3rbHcnFj3zad93fp3DZ+xjlmEiABEiABQ8BEKYP/UnxuhPOiJARMCcdFeesrI5xzw3QWrRT3zyOSvUx+bcfuwjSNMc3Lexpt2s7uvJjMjkNxtz013I4ESIAEtpSAEXb1GYBPgaAyE8V9SydDSYZt8tYlFUYi6w1GwnONhLuIu8u2yyQ5Sp3J8sYjafbnJe4zThT3klyE2E0SIAESyJNAJOsm9zdeRnX2nvKe5xnhsWwIaK2lzrrIuvybl1RlFeG17b/tdr6S7Lt/HpyiqjO2TFz6ZCvumXKiuNtcCbgNCZAACWwJASPs8qdn+f3whrB/9hnwqayJwKj7lsyI4g/TlHCU6Lp8xRfqsZU3X9Hy3d9FHjmmN6fkPJModWb++76cF30YbM+J7XZL5xPFvfjXJPaQBEiABDInYFILFgp7ksRT3jM/LTzAAgJmvkpkXWQ9Xts7voevqGWxfxZtVvHGIQ1OSfPCVp5d/Ni3Taf9XTrGCwgJkAAJkEDFCBgBin7BBZH0XwD48CranpQmw3SZis2DMgwnVsJR0mCkhGPWkp6GPCahdRK1HMZZZfG3eXDV9nz4RtxT4UxxL8PVin0kARIggZQJmEobO48Bdd9I+jcAPrAU9igCH/wSYYWZlM8Om4sTMCUcJbIuwu4iPy7bUtLfnHYuQmu7bRacV7W5zoJNi+aOz41YKvOR4s7rIwmQAAlsEYEvta5/DOw8AdR7RtIfPwbu35/lszPqvkXzoahD1VrLCqYi6vN568uEqsjyGEdt209f0VsltNvUJ2GRRkqVrbhndu4o7kW9arFfJEACJJAiASNC9aeAugfoJ9L2E+C996AfA/CKujPinuKZ2t6mTNpWJOsiWVlJOoXWLrqemXwmzPI8bmbkGEkLNrmMc9EH1Lb/ttst7BPFfXuvkRw5CZDAFhAwFTfqz55B3b0L/VTG/BS4dy+Ud0bdt2ASFHyIpoSjCLvUW7cVG5/tXEQtC8nPok3fMW1Tn0TeoxvD6NNhO5+yEHenc0dxL/gFjd0jARIgAVcC5iG+xjOgXvseanrHpME8Ay7vhu8ZdXelyu3TJBBLhYnXW98mebQVRdvtnORvwbm0PZbtdpvu07LjR6kzeYu7LxNFcU/zSsS2SIAESGCDBETYHwPNfRH251DTt42wf/89pnfuaDwDGHXf4Ana8kPHUmFE1ucjnq4ClYXkZ9Gmt6hlINns0xXUZQs2LeKUdEpyu5mhuG/5hZTDJwESKD+Bnta1fwo0916g8RLArduhsE+jCjHfA4y6l/88l3EE5q8/UrpRZF0eOI2/bGXHdjtfIfXdn+L/5iQtw7lbtGCTr7hnMp8o7mW8ErLPJEACJCD1GLWuPQVag6MgNxg3bkHjBaCNuOM5sG7UPV4aknXdOd1cCZhnK5blrftKje/+lGw7yd4Wzouqzrh4su1Niu12iexdOuT6ueX2JEACJEACGRAQYX/2DO1+2wj7TeijIyPuAF6+SCnq/g3wwQfXy0Q+AvDxklrvihVmMjjj5WjSrA0g0XX5kihmWtH1bZFH33H67s+bmTerzrh4sq2Qe3F26VA5rhzsJQmQAAlUlICI0f8C2gevQmGf3oDGMXBDxF2+Ecn7gqj7HUA/k+0sc90Zda/oREpxWCZvXeajRNcjWfcRGC+pWVCVhkK7vdH1dc79qgWbFn2CbOf9On2aHZPinuIFjE2RAAmQQBYEvvxS1x98jHb/BI0TAPuH0HgFHN6APj4OjxjIu1PU/Rku795dXWGGUfcsTmmp24yqFpnIetKiNrYCQ0m3E2pyyp9TvOqMrSvbznuKe6mvgOw8CZAACSwgICXz/i/QuTwNI+x72jx0asSdUXdOnTwJmBKOkgYTzEfzspWVLOQziza9pCqjiD/7ZCfuWXCSG9P5tK9FH7ss5uMbbdreReR5beCxSIAESGCrCXyldeMQ6EzOroT9VMT9ABonkP+lEnW/C7Mg06q67oy6b+18NKkwkawnCcwmxT0LUfNt03f/LOTPt0+++xdxTC59SlqwyUXeU/2MUNy39nLMgZMACRSNwNdaN0ev0O3uSNm8M0yxH6Sy7O1Dn4q5Zxp1f4p79+4lrqbKXPeizZRs+xNLhZHIerzeeqoC4hix33Z5tGVPTtlF55PSwuaPZnueXG4crm1Lcc/2+sfWSYAESGAlgT//VjzYGUAAAAmDSURBVLfuvY3uZAf1XZMOIzvN6rDjDHt6X3tF3a+Vhryq686o+8rTszUbxFJhFgmKrZRQHrOTx3jLa8vfkpumKp67NMcUf3A16dqQ+WeE4r41l2QOlARIoGgEvvylbr9zC91JDfWuKbF4BuBK3vONut8zfXgC4D3z/vFj4P59aEbdizZ70umPKeEoCyNJdD3uBLYCUkR5TFPUVomyLSf2qTo3M8vkPfP5QHFP59rHVkiABEjAmsD//LXuNA/Pdlu1/Z2Ohj43e4q8Xxf3nKPuT4F79xCky+AJ8N570I8B3DcS/w1z3a3PcZE3nEuFEQ+wlY0iSjr7ZCfE5JQuJ+EpAj/PNQvOTJUp8gWVfSMBEqguga++093aPnYnfex0umZho3Ngat4nRd1396HPxOav5bqfYk8fBPnv05QrzFhH3X8BfPjh9cWZzJkL+iULuwYhRi7IVJgJbVJh5vPWXSLBLtva3gz4tum7fxaiVcU+VXFMaZx7W3m3/Tys7BMj7oW5pLIjJEAC1SSg1V/8Bt0f7WJ3PMBOpxMK7fkFEMl7WlH3aEEmaX9hXfdVue6xqPssXWa9qLumtG9+RptUmLis2woERc0uQktO5BRF3yMStp+xlZIeQzvbluK++esqe0ACJFBBApKO8Og5dm93sTvuYyeKqkOEvQMdF3fkEHV/+QK4ddtEyGPynrSaqmfUXYR9WsFTWpohmRKOkrcuXzZ/yl9LIJKkYg6Sj8CwT3ZCTE52nLK+wYrLu+28X6tPFPfSXIrZURIggTIQEGH/Hy+w1+5ib9RHrS0R9ouw54G8G3GvWtT9C0A/VOqyDOeoin00eevzsp6pQGQs7mtJDW8cZgS2+dxv8mbGpSLTWnOc4l7FKzjHRAIkkDuBnta1v3eEvckUe/VaKOwXgbD30e50AmGPxF2+6xV11whKQwIWue5HIYobt6B9ou7XHlIF8IHJYQ+rVmLKtJjcp1xwwFhVGNtc27VkoeCSvklRc+Hpsm0WY8qiTd8xVbFPi6rO2N5MLd2O4r6Zay2PSgIkUBECkpbw6BUOWq0gJabWmgltH1PdCfLZo6i7eHw7hai7LMiEU9H2+GqqJ9g/PNR4BeSR626E/ZLCnv9EjqXCrLM4kq9o+e5fRVHLYkxZtOl77nz3L+KYsuzT/M20j7jP2FPc87/m8ogkQAIVIPD553rn7t/FwfQSezUF1dLQ/WBcfbRwJexpRt2nIuxRhZnNRd0lHYbCnvMcNqkwIuryJUIw/8pSQGyOZSslvvLnuz852c0dckqHU1zeU/mMUNxzvvjycCRAAuUm8LnWO/dOcXh5ib3RAKrZDh/4FHEPtR1YHnW/QLvbXZjrPo2tnLqsrvvCqLs+DMtE3oDGccg6jQozL4HLD4EJI+z5zl+TCjMv61lIVRZtUrLt5I+c8uG0Kc7Rg6upfMYo7vleg3k0EiCBkhL4Uus6nuFGs4PduLDHRXtTUfe9A2ichGAX1nVfJ9c9LA05AYU911lrUmEiWU8lSjc3gFQEIoc2fUXLd/8sOLFP+Uh60c7dMnm3/YwH21Hcc70c82AkQAJlI/CV1o2L17hxOcHuaAjVbEFjAESR9kH/6n1lou7PgLt3Maaw5zdbY6kwNnmxvvLnu3/RpGiZzzhJUcIZ99mfnOwkfZs4JVWdsZ1jwTynuOd3XeaRSIAESkTg8691s3X7/OaN1m53PByqRqsVCPtUxF1eMXlPirq3pAxkmPQePJyada57FHWXwPv+bDXVV5jeuBGkzETpMtKfhRVmvgde3sH4A2DMlJjsJ6uR9agChfw+zkJgsmiT4m8npL6cfPfnubc7T3lziqLvUe8o7tlfbnkEEiCBqhL4c61bnee42dfYBYZoSvY6gIaJtA8AZBF1P5eDxFZTnd0MnAPdXWh5JnU3lv8+NdVrknLdk9JlAmG/CX10FIq7/HdUHlLaegkKe15z2qTCZFoybm4stmKQhcBk0SaF1k5Iyam4nOLy7vQZYcQ9rys1j0MCJFBoAl/+UrfHe7g11eiKsDd0Sw8jSZc38r0FUfdA5mNSHeW620fdL9DpdJ1WU02qMOMaddeAPnmM8f37GDHCnu30nIuuLxIqX9Hy3d9JIBKIZbF/Fm2SU3GFNt6zbTj3UWqc9c01xT3bazVbJwESKDiBz3+tO50ObmGKLoZGziXCbkR8mFLU/SpdJl7X/XqFGZ+o+2m4IhMieU+Ouh/jxs2b+vkL6J1XGFHYs5+csei69S9mSyHeBqmJUPiwo6Rvr6SX5TMi/YyvybB03lPcs79u8wgkQAIFJPCfvtPdZgtvTaboBMLeDCPsjdkCShlH3c3iTFerqWYXdT+8AS2VIadH0LiF4fsKI0CFufp8pU4gFl2P/471kc+yCIivJPvuT052kk5OxeRk9WA6xT31SzYbJAESKDKBv/iN3h1O8dZOA+3JaKjqzZbGEGg0EYi7fdR9gGar7VRhxj7qfo5Odzesxx6l4Fjkui+Kuksb05sYvK9UMES+0idgZD16wLRokk5RK6aozfcqi/OURZu8wbKbT+twWrVgE8tBpn/5ZoskQAJFJPD5D3qvPcGtyXTYliWSWi1gJu6RsDtE3QdSVWauwoxzrnvGUffJFFMKe7azMRZdjx/IR9zX+WW/6ti+bfruT3m0Ez1yIqfosxatjvzGnGDEPdtrOlsnARLYMIE/+z/P99XB7ZujS7RE1uU1HkFF72fdq1DUvX2AyykYYc9q6sWi6xRaO9EiJ3KaJ7DJm9syzMeo6gzFPasLOdslARIoFoE/e6731Q5uDiYSGAfGw/AvjCLs49FQFSHqLqkzUgJSXmnkurf3cTl5jP777zMlJovZOCfs0SE2KSCM0FKIiyTEnI9289GF0xsLNjHinsXVnW2SAAlsjMCffqsPOruDm7Wddj0u6LKIUiTrVYu6D6e47Bzigjns6U87I+uU9OTFoVwExPYGpwzR0CLMB3Kyk+SqcJpVnaG4p3+dZ4skQAJ5E9Ba/ekR9tXJ4OZOXdXnBR0t+Y5d1P2qDKRdhZnrue4DNNtt7ZLrbh91P8fUPLDaNZVv+peY7Bzi/IFSo7yRb8Px5qTdVwA2vT8l2070isjJd+4UcUzsk/t8DB5cpbhvw28fjpEEKkpAxOqLv8RBv4PD+hh1GWa7vVjQix51D9Jl5CUrqHagw7rub1aYUZcYU9izndQJ0u4iTy7bZiEwWbTpOyb2yV3U4nvY/sUiC85ZtMn5ZDcf5jnV/j/iJqSSgm3ldgAAAABJRU5ErkJggg==');
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		width: 100%;
+		height: 110rpx;
+		padding: 0 30rpx;
+		box-sizing: border-box;
+		@include main_bg_color(theme);
+	}
+
+	.product-con .nav .money {
+		font-size: 28rpx;
+		color: #fff;
+		font-weight: 700;
+	}
+
+	.product-con .nav .money .num {
+		font-size: 48rpx;
+	}
+
+	.product-con .nav .money .y-money {
+		font-size: 26rpx;
+		margin-left: 10rpx;
+		text-decoration: line-through;
+	}
+
+	.product-con .nav .time {
+		font-size: 20rpx;
+		color: #fff;
+		text-align: center;
+	}
+
+	.product-con .nav .time .timeCon {
+		margin-top: 10rpx;
+	}
+
+	.product-con .nav .time .timeCon .num {
+		padding: 0 7rpx;
+		font-size: 22rpx;
+		color: #ff3d3d;
+		background-color: #fff;
+		border-radius: 2rpx;
+	}
+
+	.product-con .nav .timeState {
+		font-size: 28RPX;
+		color: #FFF;
+	}
+
+	.product-con .nav .iconfont {
+		color: #fff;
+		font-size: 30rpx;
+		margin-left: 20rpx;
+	}
+
+	.product-con .wrapper .introduce {
+		margin: 0;
+	}
+
+	.product-con .wrapper .introduce .infor {
+		width: 570rpx;
+	}
+
+	.product-con .wrapper .introduce .iconfont {
+		font-size: 36rpx;
+		color: #999999;
+	}
+
+	.product-con .wrapper .label {
+		margin: 18rpx 0 0 0;
+		font-size: 24rpx;
+		color: #82848f;
+	}
+
+	.product-con .wrapper .label .stock {
+		width: 255rpx;
+		margin-right: 28rpx;
+	}
+
+	.product-con .footer {
+		padding: 0 20rpx 0 30rpx;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		box-sizing: border-box;
+		background-color: #fff;
+		z-index: 277;
+		border-top: 1rpx solid #f0f0f0;
+		height: 100rpx;
+		height: calc(100rpx + constant(safe-area-inset-bottom)); ///兼容 IOS<11.2/
+		height: calc(100rpx + env(safe-area-inset-bottom)); ///兼容 IOS>11.2/
+	}
+
+	.product-con .footer .item {
+		font-size: 18rpx;
+		color: #666;
+	}
+
+	.product-con .footer .item .iconfont {
+		text-align: center;
+		font-size: 40rpx;
+	}
+
+	.product-con .footer .item .iconfont.icon-shoucang1 {
+		@include main-color(theme);
+	}
+
+	.product-con .footer .item .iconfont.icon-gouwuche1 {
+		font-size: 40rpx;
+		position: relative;
+	}
+
+	.product-con .footer .item .iconfont.icon-gouwuche1 .num {
+		color: #fff;
+		position: absolute;
+		font-size: 18rpx;
+		padding: 2rpx 8rpx 3rpx;
+		border-radius: 200rpx;
+		top: -10rpx;
+		right: -10rpx;
+	}
+
+	.product-con .footer .bnt {
+		width: 540rpx;
+		height: 76rpx;
+	}
+
+	.product-con .footer .bnt .bnts {
+		width: 270rpx;
+		text-align: center;
+		line-height: 76rpx;
+		color: #fff;
+		font-size: 28rpx;
+	}
+
+	.product-con .footer .bnt .joinCart {
+		border-radius: 50rpx 0 0 50rpx;
+		@include left_color(theme);
+	}
+
+	.radius {
+		border-radius: 50rpx 0 0 50rpx !important;
+	}
+
+	.bg_color {
+		@include main_bg_color(theme);
+	}
+
+	.font_color {
+		@include main_color(theme);
+	}
+
+	.product-con .footer .bnt .buy {
+		border-radius: 0 50rpx 50rpx 0;
+		// background-image: linear-gradient(to right, #fa6514 0%, #e93323 100%);
+		@include main_bg_color(theme);
+	}
+
+	.setCollectBox {
+		font-size: 18rpx;
+		color: #666;
+	}
+
+	.bg-color-hui {
+		background: #bbbbbb !important;
+		border-radius: 0 50rpx 50rpx 0;
+	}
+
+	.canvas {
+		position: fixed;
+		z-index: -5;
+		opacity: 0;
+	}
+
+	.poster-pop {
+		width: 450rpx;
+		height: 714rpx;
+		position: fixed;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 99;
+		top: 50%;
+		margin-top: -357rpx;
+	}
+
+	.poster-pop image {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	.poster-pop .close {
+		width: 46rpx;
+		height: 75rpx;
+		position: fixed;
+		right: 0;
+		top: -73rpx;
+		display: block;
+	}
+
+	.poster-pop .save-poster {
+		background-color: #df2d0a;
+		font-size: ：22rpx;
+		color: #fff;
+		text-align: center;
+		height: 76rpx;
+		line-height: 76rpx;
+		width: 100%;
+	}
+
+	.poster-pop .keep {
+		color: #fff;
+		text-align: center;
+		font-size: 25rpx;
+		margin-top: 10rpx;
+	}
+
+	.mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.6);
+		z-index: 9;
+	}
+
+	.mask_transparent {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: transparent;
+		z-index: 300;
+	}
+
+	.home-nav {
+		/* #ifdef H5 */
+		top: 20rpx !important;
+		/* #endif */
+	}
+
+	.home-nav {
+		color: #fff;
+		position: fixed;
+		font-size: 33rpx;
+		width: 56rpx;
+		height: 56rpx;
+		z-index: 999;
+		left: 33rpx;
+		background: rgba(190, 190, 190, 0.5);
+		border-radius: 50%;
+
+		&.on {
+			background: unset;
+			color: #333;
+		}
+	}
+
+	.home-nav .line {
+		width: 1rpx;
+		height: 24rpx;
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.home-nav .icon-xiangzuo {
+		width: auto;
+		font-size: 28rpx;
+	}
+
+	.attrImg {
+		width: 66rpx;
+		height: 66rpx;
+		border-radius: 6rpx;
+		display: block;
+		margin-right: 14rpx;
+	}
+
+	.switchTxt {
+		height: 60rpx;
+		flex: 1;
+		line-height: 60rpx;
+		box-sizing: border-box;
+		background: #EEEEEE;
+		padding-right: 0 24rpx 0;
+		border-radius: 8rpx;
+		text-align: center;
+	}
+
+	.ensure {
+		width: 100%;
+		background-color: #fff;
+		border-top-left-radius: 40rpx;
+		border-top-right-radius: 40rpx;
+		padding-bottom: 22rpx;
+		padding-top: 38rpx;
+		padding-bottom: calc(22rpx + constant(safe-area-inset-bottom)); ///兼容 IOS<11.2/
+		padding-bottom: calc(22rpx + env(safe-area-inset-bottom)); ///兼容 IOS>11.2/
+
+		.title {
+			font-size: 32rpx;
+			color: #282828;
+			text-align: center;
+			margin: 0 0 36rpx 0;
+			position: relative;
+
+			.close-box {
+				position: absolute;
+				right: 30rpx;
+				top: 8rpx;
+			}
+		}
+
+		.list {
+			max-height: 60vh;
+			margin: 0 30rpx 20rpx;
+			overflow: scroll;
+
+			.item {
+				margin-bottom: 40rpx;
+				flex-wrap: nowrap;
+
+				.pictrue {
+					width: 36rpx;
+					height: 36rpx;
+					border-radius: 50%;
+					margin-right: 30rpx;
+
+					::v-deep image,
+					.easy-loadimage,
+					image,
+					uni-image {
+						width: 100%;
+						height: 100%;
+						border-radius: 50%;
+					}
+				}
+
+				.text {
+					// width: 618rpx;
+					color: #999999;
+					font-size: 28rpx;
+
+					.name {
+						color: #333333;
+						font-weight: bold;
+						margin-bottom: 20rpx;
+					}
+				}
+			}
+		}
+
+		.bnt,
+		.activityBtn {
+			width: 690rpx;
+			height: 86rpx;
+			text-align: center;
+			line-height: 86rpx;
+			border-radius: 43rpx;
+			font-size: 30rpx;
+			color: #fff;
+			margin: 0 auto;
+		}
+
+		.icon-gou1 {
+			@include main_color(theme);
+		}
+
+		.bnt {
+			@include main_bg_color(theme);
+		}
+	}
+
+	.product-con .attribute {
+		padding: 0;
+
+		.line1 {
+			width: 600rpx;
+		}
+	}
+
+	.guarantee-pop-box {
+		position: fixed;
+		bottom: 0;
+		z-index: 999;
+	}
+</style>

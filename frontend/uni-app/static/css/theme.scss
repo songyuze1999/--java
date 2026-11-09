@@ -1,0 +1,219 @@
+/*
+@mixin 指令允许我们定义一个可以在整个样式表中重复使用的样式。
+*/
+
+@mixin theme-vars(
+	$main-color,
+	$second-color,
+	$price-color,
+	$gradient-color,
+	$light-color,
+	$main-gradient,
+	$second-gradient,
+	$index-gradient,
+	$seckill-gradient,
+	$coupons-gradient,
+	$bargain-gradient,
+	$login-gradient,
+	$bragin-border
+) {
+	--view-theme: #{$main-color};
+	--view-theme-16: #{$main-color};
+	--view-priceColor: #{$price-color};
+	--view-minorColor: #{$second-color};
+	--view-minorColorT: #{$light-color};
+	--view-bntColor: #{$second-color};
+	--view-gradient: #{$gradient-color};
+	--view-main-gradient: linear-gradient(#{$main-gradient});
+	--view-second-gradient: linear-gradient(#{$second-gradient});
+	--view-index-gradient: -webkit-linear-gradient(#{$index-gradient});
+	--view-seckill-gradient: -webkit-linear-gradient(#{$seckill-gradient});
+	--view-coupons-gradient: -webkit-linear-gradient(#{$coupons-gradient});
+	--view-bargain-gradient: -webkit-linear-gradient(#{$bargain-gradient});
+	--view-login-gradient: -webkit-linear-gradient(#{$login-gradient});
+	--view-bragin-border: #{$bragin-border};
+}
+
+[data-theme = "theme1"] {
+	@include theme-vars(
+		$main-color-theme1,
+		$second-color-theme1,
+		$price-color-theme1,
+		$left-button-color1,
+		$coupons-light-color1,
+		$main-gradient-color1,
+		$second-gradient-color1,
+		$index-gradient-color1,
+		$miaosha-grradient-color1,
+		$coupons-gradient-color1,
+		$bargain-btn-color1,
+		$logn-gradient-color1,
+		$bragin-border-rate1
+	);
+}
+
+[data-theme = "theme2"] {
+	@include theme-vars(
+		$main-color-theme2,
+		$second-color-theme2,
+		$price-color-theme2,
+		$left-button-color2,
+		$coupons-light-color2,
+		$main-gradient-color2,
+		$second-gradient-color2,
+		$index-gradient-color2,
+		$miaosha-grradient-color2,
+		$coupons-gradient-color2,
+		$bargain-btn-color2,
+		$logn-gradient-color2,
+		$bragin-border-rate2
+	);
+}
+
+[data-theme = "theme3"] {
+	@include theme-vars(
+		$main-color-theme3,
+		$second-color-theme3,
+		$price-color-theme3,
+		$left-button-color3,
+		$coupons-light-color3,
+		$main-gradient-color3,
+		$second-gradient-color3,
+		$index-gradient-color3,
+		$miaosha-grradient-color3,
+		$coupons-gradient-color3,
+		$bargain-btn-color3,
+		$logn-gradient-color3,
+		$bragin-border-rate3
+	);
+}
+
+[data-theme = "theme4"] {
+	@include theme-vars(
+		$main-color-theme4,
+		$second-color-theme4,
+		$price-color-theme4,
+		$left-button-color4,
+		$coupons-light-color4,
+		$main-gradient-color4,
+		$second-gradient-color4,
+		$index-gradient-color4,
+		$miaosha-grradient-color4,
+		$coupons-gradient-color4,
+		$bargain-btn-color4,
+		$logn-gradient-color4,
+		$bragin-border-rate4
+	);
+}
+
+[data-theme = "theme5"] {
+	@include theme-vars(
+		$main-color-theme5,
+		$second-color-theme5,
+		$price-color-theme5,
+		$left-button-color5,
+		$coupons-light-color5,
+		$main-gradient-color5,
+		$second-gradient-color5,
+		$index-gradient-color5,
+		$miaosha-grradient-color5,
+		$coupons-gradient-color5,
+		$bargain-btn-color5,
+		$logn-gradient-color5,
+		$bragin-border-rate5
+	);
+}
+
+//主色
+@mixin main_color($color) { 
+	color: var(--view-theme, #{$main-color-theme1}) !important;
+}
+
+//辅色
+@mixin second_color($color) { 
+	color: var(--view-minorColor, #{$second-color-theme1}) !important;
+}
+
+//价格色
+@mixin price_color($color) { 
+	color: var(--view-priceColor, #{$price-color-theme1}) !important;
+}
+
+//左侧按钮
+@mixin left_color($color) { 
+	background-color: var(--view-gradient, #{$left-button-color1}) !important;
+}
+// 详情页优惠券
+@mixin coupons_border_color($color) { 
+	border: 1px solid var(--view-theme, #{$main-color-theme1});
+}
+
+//分类页二级菜单按钮
+@mixin cate-two-btn($color) { 
+	background-color: var(--view-minorColorT, #{$nav-two-btn1}) !important;
+}
+
+@mixin white_left_border{ 
+	border-left-color: #fff !important;
+}
+
+@mixin white_right_border{ 
+	border-right-color: #fff !important;
+}
+
+
+//tab下划线
+@mixin tab_border_bottom($color) {
+	border-bottom: 4rpx solid var(--view-theme, #{$main-color-theme1}) !important;
+}
+
+// 优惠券淡色
+@mixin coupons_light_color($color) { 
+	background-color: var(--view-minorColorT, #{$coupons-light-color1}) !important;
+}
+
+
+//主色背景
+@mixin main_bg_color($color) { 
+	background-color: var(--view-theme, #{$main-color-theme1}) !important;
+}
+
+
+// 主渐变色
+@mixin linear-gradient($color) {
+	background: var(--view-main-gradient, linear-gradient(#{$main-gradient-color1}));
+}
+
+//辅渐变色
+@mixin second-gradient($color) {
+	background: var(--view-second-gradient, linear-gradient(#{$second-gradient-color1}));
+}
+
+// 首页渐变
+@mixin index-gradient($color) {
+	background: var(--view-index-gradient, -webkit-linear-gradient(#{$index-gradient-color1}));
+}
+
+
+@mixin seckill-gradient($color) {
+	background: var(--view-seckill-gradient, -webkit-linear-gradient(#{$miaosha-grradient-color1}));
+}
+
+@mixin coupons-gradient($color) {
+	background-image: var(--view-coupons-gradient, -webkit-linear-gradient(#{$coupons-gradient-color1}));
+}
+
+//砍价按钮 bargain-btn-color1
+@mixin bargain-btn($color) {
+	background-image: var(--view-bargain-gradient, -webkit-linear-gradient(#{$bargain-btn-color1}));
+}
+
+ //砍价弹框小三角
+ @mixin bragin-border-rate($color) {
+	 border-color: var(--view-bragin-border, #{$bragin-border-rate1});
+ }
+ 
+ // 手机登录渐变色
+ @mixin logn-gradient($color) {
+ 	 background: var(--view-login-gradient, -webkit-linear-gradient(#{$logn-gradient-color1})) !important;
+ }

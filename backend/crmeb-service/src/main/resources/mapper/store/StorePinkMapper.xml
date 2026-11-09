@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbkj.service.dao.StorePinkDao">
+
+    <select id="selectSizePink" resultType="com.zbkj.common.model.combination.StorePink">
+        SELECT
+            p.id, p.uid, p.order_id, p.order_id_key, p.total_num, p.total_price,
+            p.cid, p.pid, p.people, p.price, p.add_time, p.stop_time, p.k_id,
+            p.is_tpl, p.is_refund, p.status, p.nickname, p.avatar, p.is_virtual
+        FROM eb_store_pink p
+                 INNER JOIN (
+            SELECT uid, MAX(id) AS max_id
+            FROM eb_store_pink
+            WHERE is_refund = 'false' AND status IN (1, 2)
+            GROUP BY uid
+        ) AS tmp ON p.uid = tmp.uid AND p.id = tmp.max_id
+        ORDER BY p.id DESC
+            LIMIT #{size};
+    </select>
+    <select id="selectPinkList" resultType="com.zbkj.common.model.combination.StorePink">
+        SELECT sp.*
+        FROM eb_store_pink AS sp
+        left join eb_store_product pro on pro.id = sp.pid
+        left join eb_user u on u.uid = sp.uid
+        <where>
+        <if test="status != null and status !='' ">
+            sp.status = #{status}
+        </if>
+        <if test="productName != null and productName !='' ">
+            and pro.store_name like CONCAT('%',#{productName},'%')
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and sp.add_time between #{startTime} and #{endTime}
+        </if>
+        <if test="keywords != '' and keywords != null ">
+            and (
+            u.uid like CONCAT('%',#{keywords},'%') or
+            u.nickname like CONCAT('%',#{keywords},'%') or
+            u.phone like CONCAT('%',#{keywords},'%')
+            )
+        </if>
+        <if test="uid != null ">
+            and u.uid = #{uid}
+        </if>
+        <if test="nickname != '' and nickname != null ">
+            and u.nickname like CONCAT('%',#{nickname},'%')
+        </if>
+        <if test="phone != '' and phone != null ">
+            and u.phone like CONCAT('%',#{phone},'%')
+        </if>
+        </where>
+        ORDER BY sp.id desc
+    </select>
+    <select id="selectPinkListNum" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM eb_store_pink AS sp
+        left join eb_store_product pro on pro.id = sp.pid
+        left join eb_user u on u.uid = sp.uid
+        where sp.status = #{status}
+            <if test="productName != null and productName !='' ">
+                and pro.store_name like CONCAT('%',#{productName},'%')
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and sp.add_time between #{startTime} and #{endTime}
+            </if>
+            <if test="keywords != '' and keywords != null ">
+                and (
+                u.uid like CONCAT('%',#{keywords},'%') or
+                u.nickname like CONCAT('%',#{keywords},'%') or
+                u.phone like CONCAT('%',#{keywords},'%')
+                )
+            </if>
+            <if test="uid != null ">
+                and u.uid = #{uid}
+            </if>
+            <if test="nickname != '' and nickname != null ">
+                and u.nickname like CONCAT('%',#{nickname},'%')
+            </if>
+            <if test="phone != '' and phone != null ">
+                and u.phone like CONCAT('%',#{phone},'%')
+            </if>
+        ORDER BY sp.id desc
+    </select>
+</mapper>

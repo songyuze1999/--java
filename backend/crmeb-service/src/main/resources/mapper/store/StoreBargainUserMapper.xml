@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbkj.service.dao.StoreBargainUserDao">
+
+    <select id="selectHeaderList" resultType="com.zbkj.common.model.bargain.StoreBargainUser">
+        SELECT
+            p.id, p.uid, p.bargain_id, p.bargain_price_min,
+            p.bargain_price, p.price, p.status, p.add_time, p.is_del
+        FROM eb_store_bargain_user p
+                 INNER JOIN (
+            SELECT uid, MAX(id) AS max_id
+            FROM eb_store_bargain_user
+            WHERE status = 3 AND is_del = FALSE
+            GROUP BY uid
+        ) AS tmp ON p.uid = tmp.uid AND p.id = tmp.max_id
+        ORDER BY p.id DESC
+            LIMIT 10
+    </select>
+    <select id="selectBargainUserList" resultType="com.zbkj.common.response.StoreBargainUserResponse">
+        SELECT sbu.*, u.nickname nickname, u.avatar avatar
+        FROM eb_store_bargain_user AS sbu
+        left join eb_user u on u.uid = sbu.uid
+        <where>
+                sbu.is_del = 0
+            <if test="status != null and status !='' ">
+                and sbu.status = #{status}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                and sbu.add_time between #{startTime} and #{endTime}
+            </if>
+            <if test="keywords != '' and keywords != null ">
+                and (
+                u.uid like CONCAT('%',#{keywords},'%') or
+                u.nickname like CONCAT('%',#{keywords},'%') or
+                u.phone like CONCAT('%',#{keywords},'%')
+                )
+            </if>
+            <if test="uid != null ">
+                and u.uid = #{uid}
+            </if>
+            <if test="nickname != '' and nickname != null ">
+                and u.nickname like CONCAT('%',#{nickname},'%')
+            </if>
+            <if test="phone != '' and phone != null ">
+                and u.phone like CONCAT('%',#{phone},'%')
+            </if>
+        </where>
+        ORDER BY sbu.id desc
+    </select>
+</mapper>
